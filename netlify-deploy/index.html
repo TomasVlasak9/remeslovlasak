@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Řemeslné práce Vlasák | Poctivé řemeslo pro váš dům, byt i zahradu</title>
+<meta name="description" content="Řemeslné práce Vlasák – výroba pergol, balkonů, teras, plotů. Montáže nábytku, kuchyní, podlah. Drobné opravy a úprava zahrad. Klatovy a okolí.">
+<meta name="theme-color" content="#5a4530">
+
+<meta property="og:title" content="Řemeslné práce Vlasák">
+<meta property="og:description" content="Poctivé řemeslo a pomocná ruka pro váš dům, byt i zahradu. Klatovy a okolí.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="cs_CZ">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400;1,500;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --brown:#5a4530;
+  --brown-dark:#3d2d1d;
+  --brown-deep:#2a1f14;
+  --brown-light:#8a6a4d;
+  --gold:#c4a572;
+  --gold-soft:#d4b985;
+  --cream:#F5EFE4;
+  --cream-soft:#EFE6D5;
+  --cream-warm:#FAF5EA;
+  --ink:#2a2118;
+  --muted:#6b5c4a;
+  --line:rgba(90,69,48,.2);
+  --line-soft:rgba(90,69,48,.1);
+  --white:#fffaf2;
+  --shadow-sm:0 2px 8px rgba(61,45,29,.06);
+  --shadow:0 4px 20px rgba(61,45,29,.08);
+  --shadow-lg:0 20px 50px rgba(61,45,29,.18);
+  --radius:4px;
+  --serif:'Playfair Display', Georgia, serif;
+  --sans:'Inter', system-ui, -apple-system, sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --wood-bg:
+    repeating-linear-gradient(90deg,
+      transparent 0, transparent 3px,
+      rgba(0,0,0,.025) 3px, rgba(0,0,0,.025) 4px),
+    repeating-linear-gradient(0deg,
+      transparent 0, transparent 80px,
+      rgba(0,0,0,.05) 80px, rgba(0,0,0,.05) 81px);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+@media (max-width:768px){html{scroll-padding-top:68px}}
+body{
+  font-family:var(--sans);
+  color:var(--ink);
+  background:var(--cream);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+::selection{background:var(--brown);color:var(--cream)}
+.container{max-width:1180px;margin:0 auto;padding:0 24px}
+
+/* ===== Scroll reveal ===== */
+.js-ready .reveal{
+  opacity:0;
+  transform:translateY(24px);
+  transition:opacity .8s var(--ease), transform .8s var(--ease);
+}
+.js-ready .reveal.in{opacity:1;transform:none}
+.reveal-d1{transition-delay:.1s}
+.reveal-d2{transition-delay:.2s}
+.reveal-d3{transition-delay:.3s}
+
+@media (prefers-reduced-motion:reduce){
+  .js-ready .reveal{opacity:1;transform:none;transition:none}
+  *{animation:none !important;transition:none !important}
+}
+
+/* ===== Header ===== */
+header{
+  position:sticky;top:0;z-index:100;
+  background:rgba(245,239,228,.92);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid transparent;
+  transition:border-color .3s, box-shadow .3s;
+}
+header.scrolled{
+  border-bottom-color:var(--line);
+  box-shadow:var(--shadow-sm);
+}
+.header-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 24px;max-width:1180px;margin:0 auto;
+}
+.logo{
+  display:flex;align-items:center;gap:14px;
+  text-decoration:none;color:var(--brown);
+  transition:transform .3s var(--ease);
+}
+.logo:hover{transform:translateY(-1px)}
+.logo-mark{
+  width:48px;height:48px;border-radius:50%;
+  border:2px solid var(--brown);
+  display:flex;align-items:center;justify-content:center;
+  background:var(--white);
+  flex-shrink:0;position:relative;
+  transition:transform .5s var(--ease);
+}
+.logo-mark svg{width:28px;height:28px;color:var(--brown)}
+.logo:hover .logo-mark{transform:rotate(-8deg)}
+.logo-text{display:flex;flex-direction:column;line-height:1.05}
+.logo-name{font-family:var(--serif);font-weight:700;font-size:18px;letter-spacing:.02em}
+.logo-tag{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.15em;margin-top:3px}
+
+nav ul{display:flex;gap:28px;list-style:none;align-items:center}
+nav a{
+  color:var(--ink);text-decoration:none;font-size:14px;font-weight:500;
+  position:relative;transition:color .2s;
+}
+nav a:not(.nav-cta)::after{
+  content:"";position:absolute;left:0;right:0;bottom:-4px;
+  height:1px;background:var(--brown);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .3s var(--ease);
+}
+nav a:not(.nav-cta):hover::after{transform:scaleX(1)}
+nav a:hover{color:var(--brown)}
+.nav-cta{
+  background:var(--brown);color:var(--white) !important;
+  padding:10px 18px;border-radius:var(--radius);
+  font-size:13px;letter-spacing:.02em;
+  transition:all .3s var(--ease);
+}
+.nav-cta:hover{
+  background:var(--brown-dark);
+  transform:translateY(-1px);box-shadow:var(--shadow);
+}
+
+.burger{display:none;background:none;border:0;cursor:pointer;width:40px;height:40px;padding:8px}
+.burger span{
+  display:block;height:2px;background:var(--brown);
+  margin:5px 0;transition:.3s var(--ease);
+  transform-origin:center;
+}
+.burger.active span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.burger.active span:nth-child(2){opacity:0}
+.burger.active span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* ===== Hero (přesně jako leták) ===== */
+.hero{
+  background:var(--brown-dark);
+  background-image:linear-gradient(135deg, var(--brown) 0%, var(--brown-dark) 70%, var(--brown-deep) 100%);
+  color:var(--cream);
+  padding:80px 24px 100px;
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:"";position:absolute;inset:0;
+  background:var(--wood-bg);
+  pointer-events:none;
+}
+.hero-inner{
+  max-width:1180px;margin:0 auto;position:relative;z-index:1;
+  display:grid;grid-template-columns:1fr auto;gap:40px;
+  align-items:center;
+}
+.hero-text{max-width:760px}
+.hero h1{
+  font-family:var(--serif);font-weight:700;
+  font-size:clamp(2.4rem, 6vw, 4.5rem);
+  line-height:1;letter-spacing:-.015em;
+  margin-bottom:28px;text-transform:uppercase;
+  color:var(--cream);
+}
+.hero h1 .line2{display:block;margin-top:.05em}
+.hero-sub{
+  font-style:italic;font-size:clamp(1.2rem, 2.2vw, 1.6rem);
+  color:var(--gold-soft);max-width:560px;margin-bottom:40px;
+  font-family:var(--serif);font-weight:500;line-height:1.4;
+}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap}
+
+/* Stamp logo (jako na letáku) */
+.hero-stamp{
+  width:240px;height:240px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+  opacity:.85;
+}
+.hero-stamp svg{width:100%;height:100%;color:var(--gold-soft)}
+
+/* ===== Buttons ===== */
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:15px 30px;border-radius:var(--radius);
+  font-size:15px;font-weight:500;text-decoration:none;
+  transition:all .3s var(--ease);cursor:pointer;border:none;
+  font-family:var(--sans);
+  position:relative;overflow:hidden;
+}
+.btn svg{transition:transform .3s var(--ease)}
+.btn:hover svg{transform:translateX(3px)}
+.btn-primary{
+  background:var(--gold);color:var(--brown-deep);
+  box-shadow:0 4px 16px rgba(0,0,0,.15);
+}
+.btn-primary:hover{
+  background:var(--gold-soft);transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(0,0,0,.2);
+}
+.btn-secondary{
+  background:transparent;color:var(--cream);
+  border:1px solid rgba(245,239,228,.4);
+}
+.btn-secondary:hover{
+  background:rgba(245,239,228,.1);
+  border-color:var(--cream);transform:translateY(-2px);
+}
+
+/* ===== Sections ===== */
+section{padding:90px 0;position:relative}
+.section-head{text-align:center;margin-bottom:60px;max-width:680px;margin-left:auto;margin-right:auto}
+.section-eyebrow{
+  display:inline-flex;align-items:center;gap:14px;
+  font-size:11px;letter-spacing:.25em;text-transform:uppercase;
+  color:var(--brown);margin-bottom:16px;font-weight:600;
+}
+.section-eyebrow::before,.section-eyebrow::after{
+  content:"";width:24px;height:1px;background:var(--brown);opacity:.4;
+}
+.section-head h2{
+  font-family:var(--serif);font-weight:700;
+  font-size:clamp(1.9rem, 4vw, 2.8rem);
+  color:var(--brown-deep);margin-bottom:14px;
+  line-height:1.15;letter-spacing:-.01em;
+}
+.section-head h2 em{font-style:italic;font-weight:600;color:var(--brown)}
+.section-head p{color:var(--muted);font-size:1.05rem}
+
+.divider{
+  display:flex;align-items:center;justify-content:center;
+  gap:16px;margin:0 auto 32px;color:var(--brown);opacity:.5;
+}
+.divider::before,.divider::after{
+  content:"";height:1px;width:60px;background:var(--brown);opacity:.4;
+}
+.divider svg{width:14px;height:14px}
+
+/* ===== Služby — 3 sloupce jako leták ===== */
+.services-cols{
+  display:grid;grid-template-columns:repeat(3, 1fr);
+  gap:0;background:var(--white);
+  border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);overflow:hidden;
+}
+.svc-col{
+  padding:44px 36px;
+  border-right:1px solid var(--line);
+  position:relative;
+  transition:background .3s var(--ease);
+}
+.svc-col:last-child{border-right:0}
+.svc-col:hover{background:var(--cream-warm)}
+.svc-col-head{
+  display:flex;align-items:center;gap:14px;
+  margin-bottom:24px;padding-bottom:16px;
+  border-bottom:1px solid var(--line);
+}
+.svc-col-icon{
+  width:42px;height:42px;border-radius:50%;
+  background:var(--brown);color:var(--cream);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  transition:transform .4s var(--ease);
+}
+.svc-col:hover .svc-col-icon{transform:rotate(-8deg) scale(1.05)}
+.svc-col-icon svg{width:20px;height:20px}
+.svc-col h3{
+  font-family:var(--serif);font-weight:700;
+  font-size:1.4rem;color:var(--brown-deep);
+  text-transform:uppercase;letter-spacing:.05em;
+}
+.svc-list{list-style:none;padding:0}
+.svc-list li{
+  position:relative;padding:8px 0 8px 22px;
+  color:var(--ink);font-size:1.02rem;
+  transition:color .2s, padding-left .2s;
+}
+.svc-list li::before{
+  content:"";position:absolute;left:4px;top:18px;
+  width:6px;height:6px;border-radius:50%;
+  background:var(--brown);
+  transition:background .2s;
+}
+.svc-list li:hover{color:var(--brown);padding-left:26px}
+.svc-list li:hover::before{background:var(--gold)}
+
+/* ===== Realizace — galerie ===== */
+.realizace{background:var(--cream-soft);position:relative;overflow:hidden}
+.realizace::before{
+  content:"";position:absolute;
+  top:-100px;right:-100px;width:300px;height:300px;
+  border:1px solid var(--brown);border-radius:50%;
+  opacity:.06;
+}
+.gallery{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
+}
+.gallery-item{
+  aspect-ratio:4/3;
+  background:var(--brown);
+  border-radius:var(--radius);
+  overflow:hidden;
+  position:relative;cursor:pointer;
+  box-shadow:var(--shadow);
+  transition:all .4s var(--ease);
+}
+.gallery-item:hover{
+  transform:translateY(-6px);
+  box-shadow:var(--shadow-lg);
+}
+.gallery-item img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .6s var(--ease);
+  display:block;
+}
+.gallery-item:hover img{transform:scale(1.06)}
+.gallery-item::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(to top, rgba(45,30,18,.4), transparent 50%);
+  opacity:0;transition:opacity .3s;
+}
+.gallery-item:hover::after{opacity:1}
+.gallery-caption{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:18px 20px;color:var(--cream);
+  font-family:var(--serif);font-style:italic;font-size:1.05rem;
+  z-index:2;
+  transform:translateY(10px);opacity:0;
+  transition:all .3s var(--ease);
+}
+.gallery-item:hover .gallery-caption{transform:translateY(0);opacity:1}
+
+.gallery-note{
+  text-align:center;margin-top:32px;
+  color:var(--muted);font-size:.9rem;font-style:italic;
+}
+
+/* Lightbox */
+.lightbox{
+  display:none;position:fixed;inset:0;
+  background:rgba(45,30,18,.92);z-index:1000;
+  align-items:center;justify-content:center;
+  padding:40px;cursor:zoom-out;
+  animation:fadeIn .3s var(--ease);
+}
+.lightbox.open{display:flex}
+.lightbox img{
+  max-width:100%;max-height:90vh;
+  border-radius:var(--radius);
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+.lightbox-close{
+  position:absolute;top:24px;right:24px;
+  background:none;border:0;color:var(--cream);
+  font-size:32px;cursor:pointer;line-height:1;
+  width:48px;height:48px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s;
+}
+.lightbox-close:hover{background:rgba(255,255,255,.1)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* ===== Hodnoty — Všestrannost & Spolehlivost ===== */
+.values{background:var(--cream)}
+.values-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:0;border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--white);overflow:hidden;
+  box-shadow:var(--shadow);
+}
+.value-item{
+  padding:48px 40px;
+  display:flex;align-items:center;gap:24px;
+  border-right:1px solid var(--line);
+  transition:background .3s var(--ease);
+}
+.value-item:last-child{border-right:0}
+.value-item:hover{background:var(--cream-warm)}
+.value-icon{
+  width:64px;height:64px;border-radius:50%;
+  background:var(--brown);color:var(--cream);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  transition:all .4s var(--ease);
+}
+.value-item:hover .value-icon{transform:rotate(-8deg) scale(1.05)}
+.value-icon svg{width:30px;height:30px}
+.value-text h3{
+  font-family:var(--serif);font-weight:700;
+  font-size:1.4rem;color:var(--brown-deep);
+  text-transform:uppercase;letter-spacing:.08em;
+  margin-bottom:6px;
+}
+.value-text p{color:var(--muted);font-size:1.02rem;line-height:1.4}
+
+/* ===== Kontakt — claim z letáku ===== */
+.contact{background:var(--cream)}
+.contact-claim{
+  text-align:center;margin-bottom:56px;
+}
+.contact-claim h2{
+  font-family:var(--serif);font-weight:700;
+  font-size:clamp(1.8rem, 3.8vw, 2.6rem);
+  color:var(--brown-deep);text-transform:uppercase;
+  letter-spacing:.02em;margin-bottom:16px;
+}
+.contact-claim h2 em{font-style:italic;font-weight:600;color:var(--brown);text-transform:none}
+.contact-claim p{color:var(--muted);font-size:1.05rem;max-width:600px;margin:0 auto}
+
+.contact-grid{
+  display:grid;grid-template-columns:1fr 1.3fr;gap:56px;
+}
+.contact-info{display:flex;flex-direction:column;gap:0}
+.contact-info h3{
+  font-family:var(--serif);font-weight:700;font-size:1.35rem;
+  color:var(--brown-deep);margin-bottom:18px;
+  display:flex;align-items:center;gap:12px;
+}
+.contact-info h3::before{content:"";flex:0 0 28px;height:1px;background:var(--brown);opacity:.5}
+.contact-item{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:14px 0;border-bottom:1px solid var(--line-soft);
+  transition:padding-left .3s var(--ease);
+}
+.contact-item:last-of-type{border-bottom:0}
+.contact-item:hover{padding-left:6px}
+.contact-item-icon{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--brown);color:var(--cream);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:transform .3s var(--ease);
+}
+.contact-item:hover .contact-item-icon{transform:scale(1.08) rotate(-5deg)}
+.contact-item-icon svg{width:16px;height:16px}
+.contact-item-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;font-weight:500}
+.contact-item-value{
+  color:var(--ink);font-weight:500;text-decoration:none;
+  display:block;margin-top:2px;font-size:1rem;
+  transition:color .2s;word-break:break-word;
+}
+.contact-item-value:hover{color:var(--brown)}
+
+.contact-section{margin-bottom:24px}
+
+/* Form */
+.form-card{
+  background:var(--white);
+  padding:44px;
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  border:1px solid var(--line);
+  position:relative;overflow:hidden;
+}
+.form-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;
+  height:4px;background:linear-gradient(90deg, var(--brown), var(--gold), var(--brown));
+}
+.form-card h3{
+  font-family:var(--serif);font-weight:700;font-size:1.55rem;
+  color:var(--brown-deep);margin-bottom:8px;
+}
+.form-card > p{color:var(--muted);margin-bottom:30px;font-size:.95rem}
+
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.form-group{margin-bottom:18px;position:relative}
+.form-group label{
+  display:block;font-size:13px;font-weight:500;
+  color:var(--ink);margin-bottom:8px;
+}
+.form-group label .req{color:#a33;margin-left:2px}
+.form-group input,
+.form-group select,
+.form-group textarea{
+  width:100%;padding:13px 16px;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:var(--cream);
+  font-family:var(--sans);font-size:15px;
+  color:var(--ink);
+  transition:all .3s var(--ease);
+}
+.form-group input:hover,.form-group select:hover,.form-group textarea:hover{border-color:var(--brown-light)}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{
+  outline:none;border-color:var(--brown);background:var(--white);
+  box-shadow:0 0 0 3px rgba(90,69,48,.1);
+}
+.form-group textarea{resize:vertical;min-height:120px}
+.form-group .hint{font-size:12px;color:var(--muted);margin-top:6px;font-style:italic}
+
+.checkbox-group{
+  display:flex;align-items:flex-start;gap:10px;
+  margin:20px 0 24px;font-size:13px;color:var(--muted);
+}
+.checkbox-group input{margin-top:3px;accent-color:var(--brown);cursor:pointer}
+.checkbox-group label{cursor:pointer}
+
+.form-submit{
+  width:100%;padding:16px;
+  background:var(--brown);color:var(--cream);
+  border:none;border-radius:var(--radius);
+  font-family:var(--sans);font-size:15px;font-weight:500;
+  cursor:pointer;transition:all .3s var(--ease);
+  letter-spacing:.02em;position:relative;overflow:hidden;
+}
+.form-submit::before{
+  content:"";position:absolute;inset:0;
+  background:var(--brown-dark);
+  transform:translateY(100%);
+  transition:transform .3s var(--ease);
+}
+.form-submit span{position:relative;z-index:1;display:inline-flex;align-items:center;gap:8px}
+.form-submit:hover::before{transform:translateY(0)}
+.form-submit:hover{box-shadow:var(--shadow)}
+.form-submit:disabled{opacity:.6;cursor:not-allowed}
+.form-submit:disabled::before{display:none}
+
+.form-success,.form-error{
+  display:none;padding:18px;border-radius:var(--radius);
+  margin-bottom:16px;font-size:14px;
+  animation:slideDown .5s var(--ease);
+}
+.form-success{
+  background:linear-gradient(135deg, #e8f0e3, #d8e8d0);
+  border:1px solid #9bb88a;color:#2e4d20;
+}
+.form-error{
+  background:linear-gradient(135deg, #f5e3e3, #ecd0d0);
+  border:1px solid #c58a8a;color:#6b2020;
+}
+.form-error a{color:#6b2020;text-decoration:underline}
+.form-success.show,.form-error.show{display:block}
+@keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+
+.error{color:#a33;font-size:12px;margin-top:6px;display:none}
+.error.show{display:block;animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.form-group input.invalid,.form-group textarea.invalid,.form-group select.invalid{border-color:#a33;background:#fdf4f4}
+
+/* ===== Footer ===== */
+footer{
+  background:var(--brown-deep);color:var(--cream-soft);
+  padding:56px 0 24px;
+  position:relative;overflow:hidden;
+}
+footer::before{
+  content:"";position:absolute;inset:0;
+  background:var(--wood-bg);opacity:.5;pointer-events:none;
+}
+.footer-grid{
+  display:grid;grid-template-columns:2fr 1fr 1fr;gap:48px;
+  margin-bottom:36px;position:relative;z-index:1;
+}
+.footer-brand{
+  font-family:var(--serif);font-size:1.4rem;color:var(--cream);
+  margin-bottom:6px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.03em;
+}
+.footer-tag{
+  display:block;font-family:var(--sans);font-size:11px;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--cream-soft);opacity:.6;margin-bottom:16px;
+}
+.footer p{font-size:.92rem;opacity:.75;max-width:340px;line-height:1.5}
+.footer h4{
+  font-size:13px;text-transform:uppercase;letter-spacing:.15em;
+  margin-bottom:18px;color:var(--cream);font-weight:600;
+}
+.footer ul{list-style:none}
+.footer ul li{margin-bottom:10px}
+.footer ul a{
+  color:var(--cream-soft);text-decoration:none;font-size:.92rem;opacity:.75;
+  transition:all .2s;
+}
+.footer ul a:hover{opacity:1;color:var(--cream)}
+.footer-social{
+  display:flex;gap:12px;margin-top:18px;
+}
+.footer-social a{
+  width:36px;height:36px;border-radius:50%;
+  border:1px solid rgba(245,239,228,.3);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--cream-soft);
+  transition:all .3s var(--ease);
+}
+.footer-social a:hover{
+  background:var(--cream);color:var(--brown-deep);
+  border-color:var(--cream);transform:translateY(-2px);
+}
+.footer-social svg{width:16px;height:16px}
+.footer-bottom{
+  border-top:1px solid rgba(245,239,228,.15);
+  padding-top:24px;text-align:center;font-size:.82rem;opacity:.55;
+  position:relative;z-index:1;
+}
+
+/* ===== Responsive ===== */
+@media (max-width:960px){
+  .container{padding:0 20px}
+  section{padding:70px 0}
+  .hero-inner{grid-template-columns:1fr;text-align:center}
+  .hero-stamp{margin:0 auto;width:180px;height:180px}
+  .hero-text{margin:0 auto}
+  .hero-actions{justify-content:center}
+  .services-cols{grid-template-columns:1fr}
+  .svc-col{border-right:0;border-bottom:1px solid var(--line)}
+  .svc-col:last-child{border-bottom:0}
+  .gallery{grid-template-columns:repeat(2,1fr)}
+  .values-grid{grid-template-columns:1fr}
+  .value-item{border-right:0;border-bottom:1px solid var(--line)}
+  .value-item:last-child{border-bottom:0}
+  .contact-grid{grid-template-columns:1fr;gap:40px}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:32px}
+}
+
+@media (max-width:768px){
+  .header-inner{padding:12px 20px}
+  .logo-mark{width:42px;height:42px}
+  .logo-mark svg{width:24px;height:24px}
+  .logo-name{font-size:16px}
+  .logo-tag{font-size:10px}
+
+  nav ul{
+    position:fixed;top:68px;left:0;right:0;
+    flex-direction:column;gap:0;background:var(--cream);
+    border-top:1px solid var(--line);padding:8px 0;display:none;
+    box-shadow:var(--shadow);max-height:calc(100vh - 68px);overflow-y:auto;
+  }
+  nav ul.open{display:flex;animation:slideDown .3s var(--ease)}
+  nav ul li{width:100%;border-bottom:1px solid var(--line-soft)}
+  nav ul li:last-child{border-bottom:0}
+  nav ul a{display:block;padding:16px 20px;font-size:15px}
+  nav a:not(.nav-cta)::after{display:none}
+  .nav-cta{margin:10px 20px;text-align:center;justify-content:center;padding:12px 18px}
+  .burger{display:block;margin-right:-8px}
+
+  .hero{padding:50px 20px 60px}
+  .hero h1{font-size:clamp(2rem, 9vw, 3rem)}
+  .hero-sub{font-size:1.1rem;margin-bottom:32px}
+  .hero-actions{gap:10px;flex-direction:column;width:100%}
+  .hero-actions .btn{justify-content:center;width:100%}
+  .hero-stamp{width:140px;height:140px}
+
+  section{padding:60px 0}
+  .section-head{margin-bottom:40px}
+
+  .svc-col{padding:32px 28px}
+  .svc-col h3{font-size:1.25rem}
+
+  .gallery{grid-template-columns:1fr;gap:16px}
+  .gallery-item{aspect-ratio:16/10}
+
+  .value-item{padding:32px 28px;flex-direction:column;text-align:center}
+  .values-grid .value-icon{margin:0 auto}
+
+  .contact-info h3{font-size:1.25rem}
+  .form-card{padding:28px 22px}
+  .form-row{grid-template-columns:1fr;gap:0}
+  .form-group input,.form-group select,.form-group textarea{font-size:16px}
+
+  .footer-grid{grid-template-columns:1fr;gap:28px}
+  footer{padding:44px 0 22px}
+}
+
+@media (max-width:420px){
+  .container{padding:0 16px}
+  .header-inner{padding:10px 16px}
+  .logo{gap:10px}
+  .logo-mark{width:38px;height:38px}
+  .logo-mark svg{width:22px;height:22px}
+  .logo-name{font-size:14px}
+  .logo-tag{font-size:9px;letter-spacing:.1em}
+  .hero h1{font-size:1.9rem}
+  .hero-sub{font-size:1rem}
+  .svc-col{padding:28px 22px}
+  .form-card{padding:24px 18px}
+}
+</style>
+</head>
+<body>
+
+<header id="header">
+  <div class="header-inner">
+    <a href="#" class="logo" aria-label="Řemeslné práce Vlasák">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <span class="logo-name">Řemeslné práce</span>
+        <span class="logo-tag">Vlasák · Klatovy</span>
+      </div>
+    </a>
+    <nav>
+      <button class="burger" aria-label="Menu" aria-expanded="false" id="burger">
+        <span></span><span></span><span></span>
+      </button>
+      <ul id="navMenu">
+        <li><a href="#sluzby">Služby</a></li>
+        <li><a href="#realizace">Realizace</a></li>
+        <li><a href="#hodnoty">O nás</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+        <li><a href="#poptavka" class="nav-cta">Poptat práci</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <h1>Řemeslné<br><span class="line2">práce Vlasák</span></h1>
+      <p class="hero-sub">Poctivé řemeslo a pomocná ruka<br>pro váš dům, byt i zahradu</p>
+      <div class="hero-actions">
+        <a href="#poptavka" class="btn btn-primary">
+          Poptat práci
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="tel:+420723793784" class="btn btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          +420 723 793 784
+        </a>
+      </div>
+    </div>
+    <!-- Stylizovaná razítková značka v duchu loga -->
+    <div class="hero-stamp">
+      <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.2">
+        <circle cx="120" cy="120" r="112" stroke-dasharray="3 3"/>
+        <circle cx="120" cy="120" r="100"/>
+        <circle cx="120" cy="120" r="92" opacity=".5"/>
+        <path d="M 28 110 Q 120 130 212 110" stroke-width="0.8" opacity=".5"/>
+        <text x="120" y="62" text-anchor="middle" font-family="Playfair Display, serif" font-size="14" font-weight="700" letter-spacing="3" fill="currentColor" stroke="none">ŘEMESLNÉ PRÁCE</text>
+        <text x="120" y="186" text-anchor="middle" font-family="Playfair Display, serif" font-size="20" font-weight="800" letter-spacing="6" fill="currentColor" stroke="none">VLASÁK</text>
+        <!-- Nářadí ve středu -->
+        <g transform="translate(120,120)" stroke-width="2" stroke-linecap="round">
+          <!-- kladivo -->
+          <g transform="rotate(-25)">
+            <line x1="-22" y1="0" x2="-22" y2="22" stroke-width="3"/>
+            <rect x="-32" y="-8" width="20" height="10" rx="2" fill="currentColor" stroke="none"/>
+          </g>
+          <!-- pilka -->
+          <g transform="rotate(20)">
+            <line x1="-12" y1="-22" x2="-12" y2="18" stroke-width="2.5"/>
+            <path d="M -16 18 L -8 22 L -8 28 L -16 24 Z" fill="currentColor" stroke="none"/>
+          </g>
+          <!-- klíč -->
+          <g transform="rotate(45)">
+            <line x1="0" y1="-5" x2="22" y2="17" stroke-width="2.5"/>
+            <circle cx="-2" cy="-7" r="6" fill="none"/>
+          </g>
+          <!-- pravítko -->
+          <g transform="rotate(70) translate(8,0)">
+            <rect x="-3" y="-22" width="6" height="40" rx="1" stroke-width="1.5"/>
+            <line x1="-3" y1="-15" x2="0" y2="-15"/>
+            <line x1="-3" y1="-5" x2="0" y2="-5"/>
+            <line x1="-3" y1="5" x2="0" y2="5"/>
+            <line x1="-3" y1="15" x2="0" y2="15"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- SLUŽBY — 3 sloupce přesně jako leták -->
+<section id="sluzby">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">Co pro vás uděláme</div>
+      <h2>Řemeslné práce <em>na míru</em></h2>
+      <div class="divider">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z" opacity=".6"/></svg>
+      </div>
+      <p>Od výroby přes montáže až po drobné opravy a údržbu. Co potřebujete doma, na chalupě nebo na zahradě.</p>
+    </div>
+
+    <div class="services-cols">
+      <!-- Sloupec 1 — VÝROBA -->
+      <div class="svc-col reveal">
+        <div class="svc-col-head">
+          <div class="svc-col-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+            </svg>
+          </div>
+          <h3>Výroba</h3>
+        </div>
+        <ul class="svc-list">
+          <li>pergoly</li>
+          <li>balkony</li>
+          <li>terasy</li>
+          <li>ploty</li>
+          <li>zahradní domky</li>
+          <li>postele</li>
+          <li>nábytek</li>
+          <li>bytové doplňky</li>
+        </ul>
+      </div>
+
+      <!-- Sloupec 2 — MONTÁŽ -->
+      <div class="svc-col reveal reveal-d1">
+        <div class="svc-col-head">
+          <div class="svc-col-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <path d="M3 9h18M9 21V9"/>
+            </svg>
+          </div>
+          <h3>Montáž</h3>
+        </div>
+        <ul class="svc-list">
+          <li>interiérové dveře</li>
+          <li>kuchyňské linky</li>
+          <li>podlahy</li>
+          <li>nábytek</li>
+          <li>bytové doplňky</li>
+          <li>terasy</li>
+          <li>balkony</li>
+          <li>sádrokartony</li>
+        </ul>
+      </div>
+
+      <!-- Sloupec 3 — OSTATNÍ PRÁCE -->
+      <div class="svc-col reveal reveal-d2">
+        <div class="svc-col-head">
+          <div class="svc-col-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9,22 9,12 15,12 15,22"/>
+            </svg>
+          </div>
+          <h3>Ostatní práce</h3>
+        </div>
+        <ul class="svc-list">
+          <li>úprava zahrad</li>
+          <li>drobné zednické práce</li>
+          <li>oprava silikon, akryl</li>
+          <li>kácení stromů</li>
+          <li>rekonstrukce</li>
+          <li>renovace</li>
+          <li>přeprava materiálu</li>
+          <li>seřízení oken a dveří</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REALIZACE — galerie -->
+<section id="realizace" class="realizace">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">Naše práce</div>
+      <h2>Realizace, které <em>za sebou stojí</em></h2>
+      <div class="divider">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z" opacity=".6"/></svg>
+      </div>
+      <p>Ukázka z toho, co jsme dělali. Ve fotogalerii najdete pergoly, kuchyně, terasy a další realizace.</p>
+    </div>
+
+    <div class="gallery" id="gallery">
+      <div class="gallery-item reveal" data-img="images/realizace/01-pergola.svg" data-caption="Zahradní pergola">
+        <img src="images/realizace/01-pergola.svg" alt="Zahradní pergola s ohništěm" loading="lazy">
+        <div class="gallery-caption">Zahradní pergola</div>
+      </div>
+      <div class="gallery-item reveal reveal-d1" data-img="images/realizace/02-kuchyne.svg" data-caption="Kuchyňská linka na míru">
+        <img src="images/realizace/02-kuchyne.svg" alt="Montáž kuchyňské linky" loading="lazy">
+        <div class="gallery-caption">Kuchyňská linka na míru</div>
+      </div>
+      <div class="gallery-item reveal reveal-d2" data-img="images/realizace/03-zahrada.svg" data-caption="Úprava zahrady">
+        <img src="images/realizace/03-zahrada.svg" alt="Úprava zahrady s posezením" loading="lazy">
+        <div class="gallery-caption">Úprava zahrady</div>
+      </div>
+    </div>
+
+    <p class="gallery-note">Vyfocené fotky reálných realizací doplníme postupně.</p>
+  </div>
+</section>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-label="Zvětšená fotka">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Zavřít">×</button>
+  <img id="lightboxImg" src="" alt="">
+</div>
+
+<!-- HODNOTY — Všestrannost & Spolehlivost (přesně z letáku) -->
+<section id="hodnoty" class="values">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">Proč my</div>
+      <h2>Co u nás <em>najdete vždy</em></h2>
+      <div class="divider">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z" opacity=".6"/></svg>
+      </div>
+    </div>
+
+    <div class="values-grid reveal">
+      <div class="value-item">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+          </svg>
+        </div>
+        <div class="value-text">
+          <h3>Všestrannost</h3>
+          <p>Od kapajícího kohoutku po pergolu.</p>
+        </div>
+      </div>
+      <div class="value-item">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L4 5v6c0 5.5 3.8 10.7 8 12 4.2-1.3 8-6.5 8-12V5l-8-3z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+        </div>
+        <div class="value-text">
+          <h3>Spolehlivost</h3>
+          <p>Co slíbíme, to platí.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KONTAKT — claim přímo z letáku -->
+<section id="kontakt" class="contact">
+  <div class="container">
+    <div class="contact-claim reveal">
+      <h2>Zavolejte a domluvíme se <em>na termínu</em></h2>
+      <p>Rádi přijedeme, podíváme se na místo a navrhneme řešení. Nabídka i nacenění jsou zdarma a nezávazné.</p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <div class="contact-section">
+          <h3>Kontakt</h3>
+          <div class="contact-item">
+            <div class="contact-item-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <div>
+              <div class="contact-item-label">Telefon</div>
+              <a href="tel:+420723793784" class="contact-item-value">+420 723 793 784</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <div class="contact-item-label">E-mail</div>
+              <a href="mailto:remeslo@vlasak-kt.cz" class="contact-item-value">remeslo@vlasak-kt.cz</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </div>
+            <div>
+              <div class="contact-item-label">Web</div>
+              <a href="https://www.remeslovlasak.cz" class="contact-item-value">www.remeslovlasak.cz</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-section">
+          <h3>Sledujte nás</h3>
+          <div class="contact-item">
+            <div class="contact-item-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </div>
+            <div>
+              <div class="contact-item-label">Instagram</div>
+              <a href="https://www.instagram.com/remeslo_vlasak" target="_blank" rel="noopener" class="contact-item-value">@remeslo_vlasak</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </div>
+            <div>
+              <div class="contact-item-label">Facebook</div>
+              <a href="https://www.facebook.com/remeslovlasak" target="_blank" rel="noopener" class="contact-item-value">Řemeslné práce Vlasák</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <div class="contact-item-label">Působnost</div>
+              <span class="contact-item-value">Klatovy a okolí</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulář -->
+      <div class="form-card reveal reveal-d1" id="poptavka">
+        <h3>Nezávazná poptávka</h3>
+        <p>Vyplňte formulář a my se vám ozveme zpět co nejdříve s nabídkou.</p>
+
+        <div class="form-success" id="formSuccess">
+          ✓ Děkujeme za poptávku! Ozveme se vám co nejdříve.
+        </div>
+        <div class="form-error" id="formError">
+          ✗ Omlouváme se, odeslání se nepodařilo. Zkuste to prosím znovu, nebo nám napište na <a href="mailto:remeslo@vlasak-kt.cz">remeslo@vlasak-kt.cz</a>.
+        </div>
+
+        <form id="dotaz" name="poptavka" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" novalidate>
+          <input type="hidden" name="form-name" value="poptavka">
+          <p style="display:none">
+            <label>Nevyplňujte: <input name="bot-field"></label>
+          </p>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="jmeno">Jméno a příjmení <span class="req">*</span></label>
+              <input type="text" id="jmeno" name="jmeno" required autocomplete="name">
+              <div class="error" data-for="jmeno">Vyplňte prosím vaše jméno.</div>
+            </div>
+            <div class="form-group">
+              <label for="telefon">Telefon <span class="req">*</span></label>
+              <input type="tel" id="telefon" name="telefon" required autocomplete="tel" placeholder="+420">
+              <div class="error" data-for="telefon">Zadejte prosím telefon.</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" autocomplete="email">
+            <div class="error" data-for="email">Zkontrolujte formát e-mailu.</div>
+          </div>
+
+          <div class="form-group">
+            <label for="typ">Typ práce</label>
+            <select id="typ" name="typ">
+              <option value="">-- vyberte --</option>
+              <optgroup label="Výroba">
+                <option>Pergola</option>
+                <option>Balkon / terasa</option>
+                <option>Plot</option>
+                <option>Zahradní domek</option>
+                <option>Nábytek na míru</option>
+              </optgroup>
+              <optgroup label="Montáž">
+                <option>Kuchyňská linka</option>
+                <option>Interiérové dveře</option>
+                <option>Podlahy</option>
+                <option>Nábytek / doplňky</option>
+                <option>Sádrokartony</option>
+              </optgroup>
+              <optgroup label="Ostatní">
+                <option>Úprava zahrady</option>
+                <option>Drobné zednické práce</option>
+                <option>Oprava silikonu / akrylu</option>
+                <option>Kácení stromů</option>
+                <option>Rekonstrukce / renovace</option>
+                <option>Seřízení oken a dveří</option>
+                <option>Něco jiného</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="lokalita">Lokalita (obec)</label>
+            <input type="text" id="lokalita" name="lokalita" placeholder="Např. Klatovy">
+          </div>
+
+          <div class="form-group">
+            <label for="popis">Popis práce <span class="req">*</span></label>
+            <textarea id="popis" name="popis" required placeholder="Popište, co potřebujete udělat. Klidně stručně — zbytek doladíme po telefonu."></textarea>
+            <div class="error" data-for="popis">Napište prosím alespoň pár slov o tom, co potřebujete.</div>
+            <div class="hint">Tip: Klidně přidejte rozměry, počet kusů nebo termín, do kdy to potřebujete hotovo.</div>
+          </div>
+
+          <div class="checkbox-group">
+            <input type="checkbox" id="souhlas" name="souhlas" required>
+            <label for="souhlas">Souhlasím se zpracováním osobních údajů za účelem vyřízení poptávky. <span class="req">*</span></label>
+          </div>
+
+          <button type="submit" class="form-submit" id="submitBtn">
+            <span>
+              Odeslat poptávku
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">Řemeslné práce Vlasák</div>
+        <span class="footer-tag">Klatovy a okolí</span>
+        <p>Poctivé řemeslo a pomocná ruka pro váš dům, byt i zahradu.</p>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/remeslo_vlasak" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="https://www.facebook.com/remeslovlasak" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h4>Navigace</h4>
+        <ul>
+          <li><a href="#sluzby">Služby</a></li>
+          <li><a href="#realizace">Realizace</a></li>
+          <li><a href="#hodnoty">O nás</a></li>
+          <li><a href="#kontakt">Kontakt</a></li>
+          <li><a href="#poptavka">Poptávka</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Kontakt</h4>
+        <ul>
+          <li><a href="tel:+420723793784">+420 723 793 784</a></li>
+          <li><a href="mailto:remeslo@vlasak-kt.cz">remeslo@vlasak-kt.cz</a></li>
+          <li><a href="https://www.remeslovlasak.cz">www.remeslovlasak.cz</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © <span id="year"></span> Řemeslné práce Vlasák · Klatovy. Všechna práva vyhrazena.
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Rok
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Sticky header
+  const header = document.getElementById('header');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 20);
+  }, {passive:true});
+
+  // Mobilní menu
+  const burger = document.getElementById('burger');
+  const navMenu = document.getElementById('navMenu');
+  burger.addEventListener('click', () => {
+    const open = navMenu.classList.toggle('open');
+    burger.classList.toggle('active', open);
+    burger.setAttribute('aria-expanded', open);
+  });
+  navMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      navMenu.classList.remove('open');
+      burger.classList.remove('active');
+    });
+  });
+
+  // Reveal animace s pojistkami
+  document.documentElement.classList.add('js-ready');
+  const revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, {threshold:.08, rootMargin:'0px 0px -40px 0px'});
+    revealEls.forEach(el => io.observe(el));
+    requestAnimationFrame(() => {
+      revealEls.forEach(el => {
+        const r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('in');
+      });
+    });
+    setTimeout(() => revealEls.forEach(el => el.classList.add('in')), 3000);
+  } else {
+    revealEls.forEach(el => el.classList.add('in'));
+  }
+
+  // Lightbox pro galerii
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxClose = document.getElementById('lightboxClose');
+  document.querySelectorAll('.gallery-item').forEach(item => {
+    item.addEventListener('click', () => {
+      lightboxImg.src = item.dataset.img;
+      lightboxImg.alt = item.dataset.caption || '';
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+  const closeLightbox = () => {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  };
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+
+  // Formulář
+  const form = document.getElementById('dotaz');
+  const successBox = document.getElementById('formSuccess');
+  const errorBox = document.getElementById('formError');
+  const submitBtn = document.getElementById('submitBtn');
+
+  const showError = (name, show) => {
+    const field = form.querySelector(`[name="${name}"]`);
+    const err = form.querySelector(`.error[data-for="${name}"]`);
+    if (field) field.classList.toggle('invalid', show);
+    if (err) err.classList.toggle('show', show);
+  };
+
+  const validate = () => {
+    let ok = true;
+    const jmeno = form.jmeno.value.trim();
+    const telefon = form.telefon.value.trim();
+    const email = form.email.value.trim();
+    const popis = form.popis.value.trim();
+    const souhlas = form.souhlas.checked;
+
+    showError('jmeno', !jmeno);
+    if (!jmeno) ok = false;
+    showError('telefon', !telefon || telefon.length < 9);
+    if (!telefon || telefon.length < 9) ok = false;
+    if (email) {
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      showError('email', !emailOk);
+      if (!emailOk) ok = false;
+    } else {
+      showError('email', false);
+    }
+    showError('popis', popis.length < 3);
+    if (popis.length < 3) ok = false;
+    if (!souhlas) {
+      ok = false;
+      form.souhlas.focus();
+    }
+    return ok;
+  };
+
+  const resetBtn = () => {
+    submitBtn.disabled = false;
+    submitBtn.querySelector('span').innerHTML = 'Odeslat poptávku <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+  };
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!validate()) return;
+    successBox.classList.remove('show');
+    errorBox.classList.remove('show');
+    submitBtn.disabled = true;
+    submitBtn.querySelector('span').textContent = 'Odesílám...';
+
+    try {
+      const formData = new FormData(form);
+      const encoded = new URLSearchParams();
+      formData.forEach((value, key) => encoded.append(key, value));
+      const response = await fetch('/', {
+        method:'POST',
+        headers:{'Content-Type':'application/x-www-form-urlencoded'},
+        body:encoded.toString()
+      });
+      if (response.ok) {
+        successBox.classList.add('show');
+        form.reset();
+        successBox.scrollIntoView({behavior:'smooth', block:'center'});
+        setTimeout(() => successBox.classList.remove('show'), 10000);
+      } else {
+        throw new Error('HTTP ' + response.status);
+      }
+    } catch (err) {
+      console.error('Form submission error:', err);
+      errorBox.classList.add('show');
+      errorBox.scrollIntoView({behavior:'smooth', block:'center'});
+      setTimeout(() => errorBox.classList.remove('show'), 10000);
+    } finally {
+      resetBtn();
+    }
+  });
+
+  form.querySelectorAll('input, textarea, select').forEach(el => {
+    el.addEventListener('input', () => {
+      if (el.classList.contains('invalid')) {
+        el.classList.remove('invalid');
+        const err = form.querySelector(`.error[data-for="${el.name}"]`);
+        if (err) err.classList.remove('show');
+      }
+    });
+  });
+</script>
+</body>
+</html>

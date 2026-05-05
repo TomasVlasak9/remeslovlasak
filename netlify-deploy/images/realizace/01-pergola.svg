@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
+<defs>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#7aa3c4"/>
+<stop offset="1" stop-color="#b8d4e3"/>
+</linearGradient>
+<linearGradient id="wood" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#8a6a4d"/>
+<stop offset="1" stop-color="#5a4530"/>
+</linearGradient>
+</defs>
+<rect width="800" height="350" fill="url(#sky)"/>
+<rect y="350" width="800" height="250" fill="#7a9856"/>
+<polygon points="150,100 650,100 700,250 100,250" fill="#8a3a28"/>
+<polygon points="150,100 400,80 650,100 700,250 400,230 100,250" fill="#a04a32"/>
+<rect x="150" y="240" width="500" height="20" fill="#8a6a4d"/>
+<rect x="160" y="260" width="20" height="240" fill="url(#wood)"/>
+<rect x="620" y="260" width="20" height="240" fill="url(#wood)"/>
+<rect x="180" y="380" width="440" height="120" fill="#9a7858"/>
+<g stroke="#6a5238" stroke-width="2" fill="none">
+<line x1="180" y1="400" x2="620" y2="400"/>
+<line x1="180" y1="430" x2="620" y2="430"/>
+<line x1="180" y1="460" x2="620" y2="460"/>
+<line x1="180" y1="490" x2="620" y2="490"/>
+</g>
+<text x="400" y="320" text-anchor="middle" fill="#F5EFE4" font-family="Georgia, serif" font-style="italic" font-size="22" opacity="0.6">[ pergola — sem patří vaše fotka ]</text>
+</svg>
