@@ -1,9 +1,10 @@
-import { store } from './_spolecne.mjs';
+import { store, katalogStore } from './_spolecne.mjs';
 
 export default async (req) => {
   const id = decodeURIComponent(new URL(req.url).pathname.split('/').filter(Boolean).pop() || '');
   if (!id) return new Response('Chybí ID', { status: 400 });
-  const data = await store().get('produkt-foto/' + id, { type: 'arrayBuffer' });
+  let data = await katalogStore().get('produkt-foto/' + id, { type: 'arrayBuffer' });
+  if (!data) data = await store().get('produkt-foto/' + id, { type: 'arrayBuffer' });
   if (!data) return new Response('Fotka nenalezena', { status: 404 });
   return new Response(data, {
     headers: {
