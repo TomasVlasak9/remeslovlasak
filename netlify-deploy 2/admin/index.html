@@ -35,11 +35,12 @@ button{font-family:var(--sans);font-size:15px;cursor:pointer;border:none;border-
 .tl-smazat{color:var(--err);background:transparent;border:1px solid rgba(179,58,58,.3)}
 .tl-smazat:hover{background:rgba(179,58,58,.08)}
 
-input[type=text],input[type=password]{
+input[type=text],input[type=password],input[type=email],textarea,select{
   width:100%;padding:13px 15px;border:1px solid var(--line);border-radius:var(--radius);
   font-family:var(--sans);font-size:16px;background:#fff;color:var(--ink)
 }
 input:focus{outline:2px solid var(--gold);outline-offset:-1px}
+textarea{min-height:90px;resize:vertical} select{min-width:150px}
 label{display:block;font-size:13px;font-weight:600;color:var(--brown);margin-bottom:7px}
 
 /* Přihlášení */
@@ -120,6 +121,9 @@ label{display:block;font-size:13px;font-weight:600;color:var(--brown);margin-bot
 
   <div class="hlaska" id="hlaska"></div>
 
+  <section style="margin-bottom:34px"><h2 style="font-family:var(--serif);color:var(--brown-dark);margin-bottom:10px">Katalog produktů</h2><p style="font-size:14px;color:var(--muted);margin-bottom:16px">Produkty jsou zatím skryté. Zobrazí se až po zaškrtnutí „Zveřejnit v katalogu“.</p><div id="produkty" class="seznam"><div class="nacitam">Načítám produkty…</div></div><div style="background:var(--cream-warm);padding:18px;border-radius:12px;margin-top:16px"><h3 style="margin-bottom:10px">Přidat další produkt</h3><input id="novyProduktNazev" type="text" placeholder="Název produktu"><button class="tl-hlavni tl-mala" id="tlPridatProdukt" style="margin-top:10px">Přidat produkt</button></div></section>
+  <section style="margin-bottom:34px"><h2 style="font-family:var(--serif);color:var(--brown-dark);margin-bottom:10px">Nezávazné poptávky</h2><div id="poptavky" class="seznam"><div class="nacitam">Načítám poptávky…</div></div></section>
+
   <div class="nahrat">
     <h2>Přidat fotku zakázky</h2>
     <p>Vyberte fotku z telefonu nebo ji rovnou vyfoťte</p>
@@ -179,6 +183,7 @@ label{display:block;font-size:13px;font-weight:600;color:var(--brown);margin-bot
         if (!v.ok) throw new Error(v.d.chyba || 'Přihlášení se nepovedlo.');
         ukaz('obrazovkaSprava');
         nactiSeznam();
+        nactiProdukty(); nactiPoptavky();
       })
       .catch(function (e) {
         var ch = el('loginChyba');
@@ -417,6 +422,31 @@ label{display:block;font-size:13px;font-weight:600;color:var(--brown);margin-bot
       .catch(function (e) { hlaska(e.message, 'err'); });
   }
 
+  function nactiProdukty() {
+    fetch('/api/produkty?aktualni=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (d) {
+      var box = el('produkty'); box.innerHTML = '';
+      (d.polozky || []).forEach(function (p) {
+        var div = document.createElement('div'); div.className = 'polozka';
+        var telo = document.createElement('div'); telo.className = 'polozka-telo';
+        var nazev = document.createElement('input'); nazev.type = 'text'; nazev.value = p.nazev || ''; telo.appendChild(nazev);
+        var cena = document.createElement('input'); cena.type = 'text'; cena.placeholder = 'Cena nebo „dle domluvy“'; cena.value = p.cena || ''; telo.appendChild(cena);
+        var popis = document.createElement('textarea'); popis.placeholder = 'Krátký popis'; popis.value = p.popis || ''; telo.appendChild(popis);
+        var obrazek = document.createElement('input'); obrazek.type = 'text'; obrazek.placeholder = 'Adresa fotografie (volitelné)'; obrazek.value = p.obrazek || ''; telo.appendChild(obrazek);
+        var label = document.createElement('label'); label.className = 'uvod-volba'; var chk = document.createElement('input'); chk.type = 'checkbox'; chk.checked = !!p.aktivni; label.appendChild(chk); label.appendChild(document.createTextNode(' Zveřejnit v katalogu')); telo.appendChild(label);
+        var akce = document.createElement('div'); akce.className = 'polozka-akce';
+        akce.appendChild(tlacitko('Uložit produkt', 'tl-vedlejsi tl-mala', function () { fetch('/api/produkty/' + encodeURIComponent(p.id), { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nazev: nazev.value, cena: cena.value, popis: popis.value, obrazek: obrazek.value, aktivni: chk.checked }) }).then(function () { hlaska('Produkt uložen.'); nactiProdukty(); }); }));
+        akce.appendChild(tlacitko('Smazat', 'tl-smazat tl-mala', function () { if (confirm('Opravdu smazat produkt?')) fetch('/api/produkty/' + encodeURIComponent(p.id), { method: 'DELETE' }).then(function () { hlaska('Produkt smazán.'); nactiProdukty(); }); }));
+        telo.appendChild(akce); div.appendChild(telo); box.appendChild(div);
+      });
+    }).catch(function () { el('produkty').textContent = 'Produkty se nepodařilo načíst.'; });
+  }
+
+  function nactiPoptavky() {
+    fetch('/api/poptavky?aktualni=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (d) { var box = el('poptavky'); box.innerHTML = ''; (d.polozky || []).forEach(function (p) { var div = document.createElement('div'); div.className = 'polozka'; div.innerHTML = '<div class="polozka-telo"><strong>' + p.produkt + '</strong><br>' + p.jmeno + ' · ' + p.email + (p.telefon ? ' · ' + p.telefon : '') + '<br><small>' + new Date(p.vytvoreno).toLocaleString('cs-CZ') + '</small><p>' + (p.zprava || '') + '</p></div>'; box.appendChild(div); }); if (!box.children.length) box.innerHTML = '<div class="prazdno">Zatím žádné poptávky.</div>'; }).catch(function () { el('poptavky').textContent = 'Poptávky se nepodařilo načíst.'; });
+  }
+
+  el('tlPridatProdukt').addEventListener('click', function () { var n = el('novyProduktNazev').value.trim(); if (!n) return; fetch('/api/produkty', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nazev: n }) }).then(function () { el('novyProduktNazev').value = ''; hlaska('Produkt přidán jako skrytý koncept.'); nactiProdukty(); }); });
+
   /* ---------- Start ---------- */
 
   function ukaz(id) {
@@ -431,6 +461,7 @@ label{display:block;font-size:13px;font-weight:600;color:var(--brown);margin-bot
       if (d.prihlasen) {
         ukaz('obrazovkaSprava');
         nactiSeznam();
+        nactiProdukty(); nactiPoptavky();
       } else if (!d.nastaveno) {
         ukaz('obrazovkaZalozeni');
       } else {
