@@ -85,6 +85,13 @@ label{display:block;font-size:13px;font-weight:600;color:var(--brown);margin-bot
   .polozka img{width:100%;height:170px}
   .polozka-akce button{flex:1}
 }
+
+.tabs{display:flex;gap:8px;margin:8px 0 26px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.tab{border:1px solid var(--line);background:var(--white);color:var(--brown-dark);border-radius:8px;padding:11px 18px;font:600 14px var(--sans);cursor:pointer}
+.tab.aktivni{background:var(--brown);color:var(--cream);border-color:var(--brown)}
+[data-panel].panel-skryty{display:none !important}
+.produkt-obrazek{display:block;max-width:180px;max-height:120px;object-fit:cover;border-radius:8px;margin:8px 0;border:1px solid var(--line)}
+.obrazek-napoveda{font-size:12px;color:var(--muted);margin-top:5px}
 </style>
 </head>
 <body>
@@ -120,11 +127,12 @@ label{display:block;font-size:13px;font-weight:600;color:var(--brown);margin-bot
   </div>
 
   <div class="hlaska" id="hlaska"></div>
+  <div class="tabs" role="tablist" aria-label="Část administrace"><button class="tab aktivni" type="button" data-panel-tl="galerie">Fotogalerie</button><button class="tab" type="button" data-panel-tl="katalog">Katalog</button></div>
 
-  <section style="margin-bottom:34px"><h2 style="font-family:var(--serif);color:var(--brown-dark);margin-bottom:10px">Katalog produktů</h2><p style="font-size:14px;color:var(--muted);margin-bottom:16px">Produkty jsou zatím skryté. Zobrazí se až po zaškrtnutí „Zveřejnit v katalogu“.</p><div id="produkty" class="seznam"><div class="nacitam">Načítám produkty…</div></div><div style="background:var(--cream-warm);padding:18px;border-radius:12px;margin-top:16px"><h3 style="margin-bottom:10px">Přidat další produkt</h3><input id="novyProduktNazev" type="text" placeholder="Název produktu"><button class="tl-hlavni tl-mala" id="tlPridatProdukt" style="margin-top:10px">Přidat produkt</button></div></section>
-  <section style="margin-bottom:34px"><h2 style="font-family:var(--serif);color:var(--brown-dark);margin-bottom:10px">Nezávazné poptávky</h2><div id="poptavky" class="seznam"><div class="nacitam">Načítám poptávky…</div></div></section>
+  <section data-panel="katalog" style="margin-bottom:34px"><h2 style="font-family:var(--serif);color:var(--brown-dark);margin-bottom:10px">Katalog produktů</h2><p style="font-size:14px;color:var(--muted);margin-bottom:16px">Produkty jsou zatím skryté. Zobrazí se až po zaškrtnutí „Zveřejnit v katalogu“.</p><div id="produkty" class="seznam"><div class="nacitam">Načítám produkty…</div></div><div style="background:var(--cream-warm);padding:18px;border-radius:12px;margin-top:16px"><h3 style="margin-bottom:10px">Přidat další produkt</h3><input id="novyProduktNazev" type="text" placeholder="Název produktu"><button class="tl-hlavni tl-mala" id="tlPridatProdukt" style="margin-top:10px">Přidat produkt</button></div></section>
+  <section data-panel="katalog" style="margin-bottom:34px"><h2 style="font-family:var(--serif);color:var(--brown-dark);margin-bottom:10px">Nezávazné poptávky</h2><div id="poptavky" class="seznam"><div class="nacitam">Načítám poptávky…</div></div></section>
 
-  <div class="nahrat">
+  <div class="nahrat" data-panel="galerie">
     <h2>Přidat fotku zakázky</h2>
     <p>Vyberte fotku z telefonu nebo ji rovnou vyfoťte</p>
     <button class="tl-hlavni" id="tlVybrat">Vybrat fotku</button>
@@ -144,8 +152,8 @@ label{display:block;font-size:13px;font-weight:600;color:var(--brown);margin-bot
     </div>
   </div>
 
-  <div id="seznam" class="seznam"></div>
-  <div class="nacitam" id="nacitam">Načítám fotky…</div>
+  <div id="seznam" class="seznam" data-panel="galerie"></div>
+  <div class="nacitam" id="nacitam" data-panel="galerie">Načítám fotky…</div>
 </div>
 
 <script>
@@ -422,6 +430,28 @@ label{display:block;font-size:13px;font-weight:600;color:var(--brown);margin-bot
       .catch(function (e) { hlaska(e.message, 'err'); });
   }
 
+  function dataZObrazku(soubor) {
+    return new Promise(function (resolve, reject) {
+      if (!soubor) return resolve(null);
+      if (!/^image\\//.test(soubor.type)) return reject(new Error('Vyberte prosím obrázek.'));
+      var reader = new FileReader();
+      reader.onerror = function () { reject(new Error('Obrázek se nepodařilo načíst.')); };
+      reader.onload = function (ev) {
+        var img = new Image();
+        img.onerror = function () { reject(new Error('Obrázek se nepodařilo načíst.')); };
+        img.onload = function () {
+          var max = 1600, pomer = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+          var w = Math.round(img.naturalWidth * pomer), h = Math.round(img.naturalHeight * pomer);
+          var platno = document.createElement('canvas'); platno.width = w; platno.height = h;
+          platno.getContext('2d').drawImage(img, 0, 0, w, h);
+          resolve(platno.toDataURL('image/webp', 0.82));
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(soubor);
+    });
+  }
+
   function nactiProdukty() {
     fetch('/api/produkty?aktualni=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (d) {
       var box = el('produkty'); box.innerHTML = '';
@@ -431,10 +461,19 @@ label{display:block;font-size:13px;font-weight:600;color:var(--brown);margin-bot
         var nazev = document.createElement('input'); nazev.type = 'text'; nazev.value = p.nazev || ''; telo.appendChild(nazev);
         var cena = document.createElement('input'); cena.type = 'text'; cena.placeholder = 'Cena nebo „dle domluvy“'; cena.value = p.cena || ''; telo.appendChild(cena);
         var popis = document.createElement('textarea'); popis.placeholder = 'Krátký popis'; popis.value = p.popis || ''; telo.appendChild(popis);
-        var obrazek = document.createElement('input'); obrazek.type = 'text'; obrazek.placeholder = 'Adresa fotografie (volitelné)'; obrazek.value = p.obrazek || ''; telo.appendChild(obrazek);
+        var obrazek = document.createElement('input'); obrazek.type = 'file'; obrazek.accept = 'image/*'; telo.appendChild(obrazek);
+        if (p.obrazek) {
+          var stary = document.createElement('img'); stary.className = 'produkt-obrazek'; stary.src = p.obrazek; stary.alt = 'Aktuální fotografie produktu'; telo.appendChild(stary);
+        }
+        var napoveda = document.createElement('div'); napoveda.className = 'obrazek-napoveda'; napoveda.textContent = p.obrazek ? 'Vyberte nový soubor, pokud chcete fotografii nahradit.' : 'Vyberte fotografii přímo z telefonu nebo počítače.'; telo.appendChild(napoveda);
         var label = document.createElement('label'); label.className = 'uvod-volba'; var chk = document.createElement('input'); chk.type = 'checkbox'; chk.checked = !!p.aktivni; label.appendChild(chk); label.appendChild(document.createTextNode(' Zveřejnit v katalogu')); telo.appendChild(label);
         var akce = document.createElement('div'); akce.className = 'polozka-akce';
-        akce.appendChild(tlacitko('Uložit produkt', 'tl-vedlejsi tl-mala', function () { fetch('/api/produkty/' + encodeURIComponent(p.id), { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nazev: nazev.value, cena: cena.value, popis: popis.value, obrazek: obrazek.value, aktivni: chk.checked }) }).then(function () { hlaska('Produkt uložen.'); nactiProdukty(); }); }));
+        akce.appendChild(tlacitko('Uložit produkt', 'tl-vedlejsi tl-mala', function () {
+          var tl = this; tl.disabled = true;
+          dataZObrazku(obrazek.files && obrazek.files[0]).then(function (obrazekData) {
+            return fetch('/api/produkty/' + encodeURIComponent(p.id), { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nazev: nazev.value, cena: cena.value, popis: popis.value, obrazekData: obrazekData || undefined, aktivni: chk.checked }) });
+          }).then(function (r) { if (!r.ok) return r.json().then(function (x) { throw new Error(x.chyba || 'Uložení se nepodařilo.'); }); hlaska('Produkt uložen.'); nactiProdukty(); }).catch(function (e) { hlaska(e.message, 'err'); }).finally(function () { tl.disabled = false; });
+        }));
         akce.appendChild(tlacitko('Smazat', 'tl-smazat tl-mala', function () { if (confirm('Opravdu smazat produkt?')) fetch('/api/produkty/' + encodeURIComponent(p.id), { method: 'DELETE' }).then(function () { hlaska('Produkt smazán.'); nactiProdukty(); }); }));
         telo.appendChild(akce); div.appendChild(telo); box.appendChild(div);
       });
@@ -446,6 +485,16 @@ label{display:block;font-size:13px;font-weight:600;color:var(--brown);margin-bot
   }
 
   el('tlPridatProdukt').addEventListener('click', function () { var n = el('novyProduktNazev').value.trim(); if (!n) return; fetch('/api/produkty', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nazev: n }) }).then(function () { el('novyProduktNazev').value = ''; hlaska('Produkt přidán jako skrytý koncept.'); nactiProdukty(); }); });
+
+
+  document.querySelectorAll('[data-panel-tl]').forEach(function (tl) {
+    tl.addEventListener('click', function () {
+      var cil = tl.getAttribute('data-panel-tl');
+      document.querySelectorAll('[data-panel-tl]').forEach(function (jiny) { jiny.classList.toggle('aktivni', jiny === tl); });
+      document.querySelectorAll('[data-panel]').forEach(function (panel) { panel.classList.toggle('panel-skryty', panel.getAttribute('data-panel') !== cil); });
+    });
+  });
+  document.querySelectorAll('[data-panel]').forEach(function (panel) { panel.classList.toggle('panel-skryty', panel.getAttribute('data-panel') !== 'galerie'); });
 
   /* ---------- Start ---------- */
 
