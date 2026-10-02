@@ -710,3 +710,29 @@ main.container > .gallery{
 @media(max-width:600px){
   main.container > .gallery{grid-template-columns:1fr;gap:18px}
 }
+
+/* ===== Detail produktu ===== */
+.produkt-karta{cursor:pointer;transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.produkt-karta:hover,.produkt-karta:focus-visible{transform:translateY(-5px);box-shadow:var(--shadow-lg);outline:none}
+.btn-detail{background:transparent;color:var(--brown);border:1px solid var(--line);margin-top:16px;justify-content:center}
+.btn-detail:hover{background:var(--cream-warm);border-color:var(--brown)}
+.produkt-modal[hidden]{display:none}
+.produkt-modal{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:24px}
+.produkt-modal-stin{position:absolute;inset:0;background:rgba(42,31,20,.72);backdrop-filter:blur(3px)}
+.produkt-modal-box{position:relative;z-index:1;width:min(900px,100%);max-height:calc(100vh - 48px);overflow:auto;background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow-lg);display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.8fr)}
+.produkt-modal-box>img{width:100%;height:100%;min-height:360px;max-height:70vh;object-fit:contain;background:var(--cream-soft)}
+.produkt-modal-obsah{padding:46px 38px;display:flex;flex-direction:column;justify-content:center}
+.produkt-modal-obsah h2{font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.7rem);line-height:1.15;color:var(--brown-deep);margin-bottom:18px}
+.produkt-modal-obsah p{color:var(--muted);white-space:pre-line}
+.produkt-modal-cena{font-weight:600;color:var(--brown)!important;margin-top:18px}
+.produkt-modal-obsah .btn{margin-top:28px;align-self:flex-start}
+.produkt-modal-zavrit{position:absolute;right:14px;top:12px;z-index:2;width:42px;height:42px;border:0;border-radius:50%;background:rgba(255,250,242,.9);color:var(--brown-deep);font-size:30px;line-height:1;cursor:pointer}
+.produkt-modal-zavrit:hover{background:var(--cream)}
+body.modal-otevreny{overflow:hidden}
+@media(max-width:700px){
+  .produkt-modal{padding:12px}
+  .produkt-modal-box{grid-template-columns:1fr;max-height:calc(100vh - 24px)}
+  .produkt-modal-box>img{min-height:220px;max-height:42vh}
+  .produkt-modal-obsah{padding:30px 24px 28px}
+  .produkt-modal-obsah .btn{width:100%;justify-content:center}
+}
