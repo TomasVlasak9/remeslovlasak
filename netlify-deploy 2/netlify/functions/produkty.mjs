@@ -1,4 +1,4 @@
-import { store, jePrihlasen, json, chyba, nepovoleno } from './_spolecne.mjs';
+import { store, katalogStore, jePrihlasen, json, chyba, nepovoleno } from './_spolecne.mjs';
 
 const KLIC = 'produkty/index.json';
 const MAX_BAJTU = 4 * 1024 * 1024;
@@ -16,8 +16,17 @@ function serad(data) {
 }
 
 async function nacti() {
-  const data = await store().get(KLIC, { type: 'json' });
-  return data && Array.isArray(data.polozky) ? serad(data) : { polozky: VYCHOZI.map(p => ({ ...p })) };
+  const trvale = katalogStore();
+  const data = await trvale.get(KLIC, { type: 'json' });
+  if (data && Array.isArray(data.polozky)) return serad(data);
+
+  // Jednorázový přechod starších dat uložených v původním úložišti.
+  const starsi = await store().get(KLIC, { type: 'json' });
+  if (starsi && Array.isArray(starsi.polozky)) {
+    await trvale.setJSON(KLIC, starsi);
+    return serad(starsi);
+  }
+  return { polozky: VYCHOZI.map(p => ({ ...p })) };
 }
 
 async function ulozObrazek(data, id) {
@@ -26,7 +35,7 @@ async function ulozObrazek(data, id) {
   const buffer = Buffer.from(cista, 'base64');
   if (!buffer.length) throw new Error('Fotku se nepodařilo načíst.');
   if (buffer.length > MAX_BAJTU) throw new Error('Fotka je po zmenšení stále příliš velká.');
-  await store().set('produkt-foto/' + id, buffer, { metadata: { typ: 'image/webp' } });
+  await katalogStore().set('produkt-foto/' + id, buffer, { metadata: { typ: 'image/webp' } });
 }
 
 export default async (req) => {
@@ -53,7 +62,7 @@ export default async (req) => {
       }
     } catch (e) { return chyba(e.message, 413); }
     data.polozky.push(polozka);
-    await store().setJSON(KLIC, serad(data));
+    await katalogStore().setJSON(KLIC, serad(data));
     return json({ ok: true, polozka });
   }
 
@@ -74,13 +83,13 @@ export default async (req) => {
     }
     if (typeof telo.aktivni === 'boolean') polozka.aktivni = telo.aktivni;
     if (Number.isInteger(telo.poradi)) polozka.poradi = Math.max(1, Math.min(data.polozky.length, telo.poradi));
-    await store().setJSON(KLIC, serad(data));
+    await katalogStore().setJSON(KLIC, serad(data));
     return json({ ok: true });
   }
   if (req.method === 'DELETE') {
     data.polozky = data.polozky.filter(p => p.id !== id);
-    await store().setJSON(KLIC, serad(data));
-    await store().delete('produkt-foto/' + id);
+    await katalogStore().setJSON(KLIC, serad(data));
+    await katalogStore().delete('produkt-foto/' + id);
     return json({ ok: true });
   }
   return chyba('Nepodporovaná metoda', 405);
