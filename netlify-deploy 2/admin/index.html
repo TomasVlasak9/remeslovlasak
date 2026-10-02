@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Správa fotek | Řemeslné práce Vlasák</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --brown:#5a4530; --brown-dark:#3d2d1d; --gold:#c4a572;
+  --cream:#F5EFE4; --cream-warm:#FAF5EA; --ink:#2a2118; --muted:#6b5c4a;
+  --line:rgba(90,69,48,.2); --radius:10px;
+  --serif:'Playfair Display',Georgia,serif; --sans:'Inter',system-ui,sans-serif;
+  --ok:#2f7d4f; --err:#b33a3a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--cream);color:var(--ink);line-height:1.6;-webkit-text-size-adjust:100%}
+.obal{max-width:860px;margin:0 auto;padding:24px 18px 80px}
+
+.hlavicka{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px 0;border-bottom:1px solid var(--line);margin-bottom:28px;flex-wrap:wrap}
+.hlavicka h1{font-family:var(--serif);font-size:24px;font-weight:700;color:var(--brown-dark)}
+.hlavicka p{font-size:13px;color:var(--muted)}
+
+button{font-family:var(--sans);font-size:15px;cursor:pointer;border:none;border-radius:var(--radius);padding:13px 22px;transition:.2s;font-weight:500}
+.tl-hlavni{background:var(--gold);color:var(--brown-dark);font-weight:600}
+.tl-hlavni:hover{filter:brightness(1.06)}
+.tl-hlavni:disabled{opacity:.5;cursor:not-allowed}
+.tl-vedlejsi{background:transparent;color:var(--brown);border:1px solid var(--line)}
+.tl-vedlejsi:hover{background:rgba(90,69,48,.06)}
+.tl-mala{padding:9px 13px;font-size:13px}
+.tl-smazat{color:var(--err);background:transparent;border:1px solid rgba(179,58,58,.3)}
+.tl-smazat:hover{background:rgba(179,58,58,.08)}
+
+input[type=text],input[type=password]{
+  width:100%;padding:13px 15px;border:1px solid var(--line);border-radius:var(--radius);
+  font-family:var(--sans);font-size:16px;background:#fff;color:var(--ink)
+}
+input:focus{outline:2px solid var(--gold);outline-offset:-1px}
+label{display:block;font-size:13px;font-weight:600;color:var(--brown);margin-bottom:7px}
+
+/* Přihlášení */
+.login{max-width:380px;margin:12vh auto 0;background:#fff;padding:34px 28px;border-radius:14px;box-shadow:0 8px 32px rgba(90,69,48,.12)}
+.login h1{font-family:var(--serif);font-size:25px;color:var(--brown-dark);margin-bottom:6px;text-align:center}
+.login .podtitul{font-size:14px;color:var(--muted);text-align:center;margin-bottom:26px}
+.login button{width:100%;margin-top:18px}
+
+/* Nahrávání */
+.nahrat{background:var(--cream-warm);border:2px dashed rgba(90,69,48,.28);border-radius:14px;padding:26px 22px;margin-bottom:34px;text-align:center}
+.nahrat h2{font-family:var(--serif);font-size:19px;color:var(--brown-dark);margin-bottom:6px}
+.nahrat p{font-size:14px;color:var(--muted);margin-bottom:18px}
+#vyberSouboru{display:none}
+.nahled{margin:18px auto 0;max-width:320px}
+.nahled img{width:100%;border-radius:var(--radius);display:block}
+.pole{margin-top:16px;text-align:left}
+.prubeh{height:6px;background:rgba(90,69,48,.15);border-radius:3px;overflow:hidden;margin-top:16px}
+.prubeh div{height:100%;width:0;background:var(--gold);transition:width .3s}
+
+/* Seznam fotek */
+.seznam{display:grid;gap:16px}
+.polozka{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(90,69,48,.08);display:flex;gap:16px;padding:14px;align-items:center}
+.polozka img{width:110px;height:85px;object-fit:cover;border-radius:8px;flex-shrink:0;background:var(--cream)}
+.polozka-telo{flex:1;min-width:0}
+.polozka-telo input{margin-bottom:9px}
+.polozka-akce{display:flex;gap:7px;flex-wrap:wrap}
+.znacka{display:inline-block;font-size:11px;color:var(--muted);background:var(--cream);padding:3px 9px;border-radius:99px;margin-bottom:7px}
+.uvod-volba{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--brown);margin:10px 0}
+.uvod-volba input{width:18px;height:18px;accent-color:var(--gold)}
+
+.hlaska{padding:13px 16px;border-radius:var(--radius);margin-bottom:18px;font-size:14px;display:none}
+.hlaska.vidi{display:block}
+.hlaska.ok{background:rgba(47,125,79,.12);color:var(--ok)}
+.hlaska.err{background:rgba(179,58,58,.1);color:var(--err)}
+
+.prazdno{text-align:center;padding:50px 20px;color:var(--muted)}
+.nacitam{text-align:center;padding:40px;color:var(--muted)}
+.skryt{display:none !important}
+
+@media(max-width:560px){
+  .polozka{flex-direction:column;align-items:stretch}
+  .polozka img{width:100%;height:170px}
+  .polozka-akce button{flex:1}
+}
+</style>
+</head>
+<body>
+
+<!-- PŘIHLÁŠENÍ -->
+<div id="obrazovkaLogin" class="skryt">
+  <div class="login">
+    <h1>Správa fotek</h1>
+    <p class="podtitul">Řemeslné práce Vlasák</p>
+    <div class="hlaska err" id="loginChyba"></div>
+    <label for="heslo">Heslo</label>
+    <input type="password" id="heslo" autocomplete="current-password" enterkeyhint="go">
+    <button class="tl-hlavni" id="tlPrihlasit">Přihlásit se</button>
+  </div>
+</div>
+
+<!-- PRVNÍ SPUŠTĚNÍ -->
+<div id="obrazovkaZalozeni" class="skryt">
+  <div class="login">
+    <h1>Správa se připravuje</h1>
+    <p class="podtitul">Počáteční heslo ještě nebylo bezpečně nastaveno. Obraťte se na správce webu.</p>
+  </div>
+</div>
+
+<!-- SPRÁVA -->
+<div id="obrazovkaSprava" class="obal skryt">
+  <div class="hlavicka">
+    <div>
+      <h1>Správa fotek</h1>
+      <p>Fotky se na webu objeví hned po uložení</p>
+    </div>
+    <button class="tl-vedlejsi tl-mala" id="tlOdhlasit">Odhlásit</button>
+  </div>
+
+  <div class="hlaska" id="hlaska"></div>
+
+  <div class="nahrat">
+    <h2>Přidat fotku zakázky</h2>
+    <p>Vyberte fotku z telefonu nebo ji rovnou vyfoťte</p>
+    <button class="tl-hlavni" id="tlVybrat">Vybrat fotku</button>
+    <input type="file" id="vyberSouboru" accept="image/*">
+
+    <div id="oblastNahledu" class="skryt">
+      <div class="nahled"><img id="nahledImg" alt="Náhled vybrané fotky"></div>
+      <div class="pole">
+        <label for="novyPopisek">Popisek (zobrazí se na webu)</label>
+        <input type="text" id="novyPopisek" placeholder="např. Zahradní pergola" maxlength="120">
+      </div>
+      <div class="prubeh skryt" id="prubeh"><div id="prubehPruh"></div></div>
+      <div style="display:flex;gap:10px;margin-top:16px">
+        <button class="tl-vedlejsi" id="tlZrusit" style="flex:1">Zrušit</button>
+        <button class="tl-hlavni" id="tlNahrat" style="flex:2">Nahrát na web</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="seznam" class="seznam"></div>
+  <div class="nacitam" id="nacitam">Načítám fotky…</div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var MAX_STRANA = 1600;
+  var vybranaData = null, vybranaSirka = 0, vybranaVyska = 0;
+
+  var el = function (id) { return document.getElementById(id); };
+
+  function hlaska(text, typ) {
+    var h = el('hlaska');
+    h.textContent = text;
+    h.className = 'hlaska vidi ' + (typ || 'ok');
+    if (typ !== 'err') setTimeout(function () { h.className = 'hlaska'; }, 4000);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ---------- Přihlášení ---------- */
+
+  function prihlasit() {
+    var heslo = el('heslo').value;
+    if (!heslo) return;
+    el('tlPrihlasit').disabled = true;
+    el('tlPrihlasit').textContent = 'Přihlašuji…';
+
+    fetch('/api/prihlaseni', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ heslo: heslo })
+    })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (v) {
+        if (!v.ok) throw new Error(v.d.chyba || 'Přihlášení se nepovedlo.');
+        ukaz('obrazovkaSprava');
+        nactiSeznam();
+      })
+      .catch(function (e) {
+        var ch = el('loginChyba');
+        ch.textContent = e.message;
+        ch.classList.add('vidi');
+      })
+      .finally(function () {
+        el('tlPrihlasit').disabled = false;
+        el('tlPrihlasit').textContent = 'Přihlásit se';
+      });
+  }
+
+  el('tlPrihlasit').addEventListener('click', prihlasit);
+  el('heslo').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') prihlasit();
+  });
+
+  el('tlOdhlasit').addEventListener('click', function () {
+    fetch('/api/odhlaseni', { method: 'POST' }).finally(function () {
+      location.reload();
+    });
+  });
+
+  /* ---------- Výběr a zmenšení fotky ---------- */
+
+  el('tlVybrat').addEventListener('click', function () { el('vyberSouboru').click(); });
+
+  el('vyberSouboru').addEventListener('change', function (e) {
+    var soubor = e.target.files && e.target.files[0];
+    if (!soubor) return;
+    if (!/^image\//.test(soubor.type)) {
+      hlaska('Tohle není obrázek. Vyberte prosím fotku.', 'err');
+      return;
+    }
+    zmensit(soubor);
+  });
+
+  function zmensit(soubor) {
+    hlaska('Připravuji fotku…');
+    var reader = new FileReader();
+    reader.onload = function (ev) {
+      var img = new Image();
+      img.onload = function () {
+        var w = img.naturalWidth, h = img.naturalHeight;
+        var pomer = Math.min(1, MAX_STRANA / Math.max(w, h));
+        w = Math.round(w * pomer);
+        h = Math.round(h * pomer);
+
+        var platno = document.createElement('canvas');
+        platno.width = w;
+        platno.height = h;
+        platno.getContext('2d').drawImage(img, 0, 0, w, h);
+
+        vybranaData = platno.toDataURL('image/webp', 0.82);
+        if (vybranaData.indexOf('data:image/webp') !== 0) {
+          vybranaData = platno.toDataURL('image/jpeg', 0.85);
+        }
+        vybranaSirka = w;
+        vybranaVyska = h;
+
+        el('nahledImg').src = vybranaData;
+        el('oblastNahledu').classList.remove('skryt');
+        el('hlaska').className = 'hlaska';
+      };
+      img.onerror = function () { hlaska('Fotku se nepodařilo načíst.', 'err'); };
+      img.src = ev.target.result;
+    };
+    reader.onerror = function () { hlaska('Soubor se nepodařilo přečíst.', 'err'); };
+    reader.readAsDataURL(soubor);
+  }
+
+  el('tlZrusit').addEventListener('click', zrusitVyber);
+
+  function zrusitVyber() {
+    vybranaData = null;
+    el('vyberSouboru').value = '';
+    el('novyPopisek').value = '';
+    el('oblastNahledu').classList.add('skryt');
+    el('prubeh').classList.add('skryt');
+    el('prubehPruh').style.width = '0';
+  }
+
+  /* ---------- Nahrání ---------- */
+
+  el('tlNahrat').addEventListener('click', function () {
+    if (!vybranaData) return;
+    var tl = el('tlNahrat');
+    tl.disabled = true;
+    tl.textContent = 'Nahrávám…';
+    el('prubeh').classList.remove('skryt');
+    el('prubehPruh').style.width = '40%';
+
+    fetch('/api/galerie', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        data: vybranaData,
+        popisek: el('novyPopisek').value,
+        sirka: vybranaSirka,
+        vyska: vybranaVyska
+      })
+    })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (v) {
+        if (!v.ok) throw new Error(v.d.chyba || 'Nahrání se nepovedlo.');
+        el('prubehPruh').style.width = '100%';
+        zrusitVyber();
+        hlaska('Hotovo. Fotka je na webu.');
+        nactiSeznam();
+      })
+      .catch(function (e) { hlaska(e.message, 'err'); })
+      .finally(function () {
+        tl.disabled = false;
+        tl.textContent = 'Nahrát na web';
+      });
+  });
+
+  /* ---------- Seznam ---------- */
+
+  function nactiSeznam() {
+    fetch('/api/galerie')
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        el('nacitam').classList.add('skryt');
+        vykresli(data.polozky || []);
+      })
+      .catch(function () {
+        el('nacitam').textContent = 'Fotky se nepodařilo načíst.';
+      });
+  }
+
+  function vykresli(polozky) {
+    var box = el('seznam');
+    box.innerHTML = '';
+
+    if (!polozky.length) {
+      box.innerHTML = '<div class="prazdno">Zatím tu nejsou žádné fotky.</div>';
+      return;
+    }
+
+    polozky.forEach(function (p, i) {
+      var div = document.createElement('div');
+      div.className = 'polozka';
+
+      var img = document.createElement('img');
+      img.src = p.soubor ? '/' + p.soubor : '/api/foto/' + p.id;
+      img.alt = p.popisek || '';
+      div.appendChild(img);
+
+      var telo = document.createElement('div');
+      telo.className = 'polozka-telo';
+
+      var znacka = document.createElement('span');
+      znacka.className = 'znacka';
+      znacka.textContent = i + 1 + '. v pořadí';
+      telo.appendChild(znacka);
+
+      var vstup = document.createElement('input');
+      vstup.type = 'text';
+      vstup.value = p.popisek || '';
+      vstup.placeholder = 'Popisek fotky';
+      vstup.maxLength = 120;
+      telo.appendChild(vstup);
+
+      var uvod = document.createElement('label');
+      uvod.className = 'uvod-volba';
+      var zatrzitko = document.createElement('input');
+      zatrzitko.type = 'checkbox';
+      zatrzitko.checked = !!p.naUvodu;
+      zatrzitko.disabled = !p.naUvodu && polozky.filter(function (x) { return x.naUvodu; }).length >= 6;
+      var popisUv = document.createElement('span');
+      popisUv.textContent = 'Zobrazit na úvodní stránce';
+      uvod.appendChild(zatrzitko);
+      uvod.appendChild(popisUv);
+      zatrzitko.addEventListener('change', function () {
+        posli(p.id, { naUvodu: zatrzitko.checked }, zatrzitko.checked ? 'Fotka se zobrazí na úvodní stránce.' : 'Fotka byla z úvodní stránky odebrána.');
+      });
+      telo.appendChild(uvod);
+
+      var akce = document.createElement('div');
+      akce.className = 'polozka-akce';
+
+      akce.appendChild(tlacitko('Uložit popisek', 'tl-vedlejsi tl-mala', function () {
+        posli(p.id, { popisek: vstup.value }, 'Popisek uložen.');
+      }));
+      if (i > 0) {
+        akce.appendChild(tlacitko('↑ Nahoru', 'tl-vedlejsi tl-mala', function () {
+          posli(p.id, { smer: 'nahoru' }, 'Pořadí změněno.');
+        }));
+      }
+      if (i < polozky.length - 1) {
+        akce.appendChild(tlacitko('↓ Dolů', 'tl-vedlejsi tl-mala', function () {
+          posli(p.id, { smer: 'dolu' }, 'Pořadí změněno.');
+        }));
+      }
+      akce.appendChild(tlacitko('Smazat', 'tl-smazat tl-mala', function () {
+        if (!confirm('Opravdu smazat tuhle fotku z webu?')) return;
+        fetch('/api/galerie/' + encodeURIComponent(p.id), { method: 'DELETE' })
+          .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+          .then(function (v) {
+            if (!v.ok) throw new Error(v.d.chyba || 'Smazání se nepovedlo.');
+            hlaska('Fotka smazána.');
+            nactiSeznam();
+          })
+          .catch(function (e) { hlaska(e.message, 'err'); });
+      }));
+
+      telo.appendChild(akce);
+      div.appendChild(telo);
+      box.appendChild(div);
+    });
+  }
+
+  function tlacitko(text, trida, akce) {
+    var b = document.createElement('button');
+    b.textContent = text;
+    b.className = trida;
+    b.addEventListener('click', akce);
+    return b;
+  }
+
+  function posli(id, telo, zprava) {
+    fetch('/api/galerie/' + encodeURIComponent(id), {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(telo)
+    })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (v) {
+        if (!v.ok) throw new Error(v.d.chyba || 'Uložení se nepovedlo.');
+        hlaska(zprava);
+        nactiSeznam();
+      })
+      .catch(function (e) { hlaska(e.message, 'err'); });
+  }
+
+  /* ---------- Start ---------- */
+
+  function ukaz(id) {
+    ['obrazovkaLogin', 'obrazovkaZalozeni', 'obrazovkaSprava'].forEach(function (o) {
+      el(o).classList.toggle('skryt', o !== id);
+    });
+  }
+
+  fetch('/api/stav')
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      if (d.prihlasen) {
+        ukaz('obrazovkaSprava');
+        nactiSeznam();
+      } else if (!d.nastaveno) {
+        ukaz('obrazovkaZalozeni');
+      } else {
+        ukaz('obrazovkaLogin');
+      }
+    })
+    .catch(function () { ukaz('obrazovkaLogin'); });
+})();
+</script>
+</body>
+</html>
