@@ -12,6 +12,13 @@
 <meta property="og:type" content="website">
 <meta property="og:locale" content="cs_CZ">
 
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" sizes="192x192" href="/favicon-192.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400;1,500;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -96,24 +103,23 @@ header.scrolled{
   padding:14px 24px;max-width:1180px;margin:0 auto;
 }
 .logo{
-  display:flex;align-items:center;gap:14px;
+  display:flex;flex-direction:column;
   text-decoration:none;color:var(--brown);
   transition:transform .3s var(--ease);
+  line-height:1;
 }
 .logo:hover{transform:translateY(-1px)}
-.logo-mark{
-  width:48px;height:48px;border-radius:50%;
-  border:2px solid var(--brown);
-  display:flex;align-items:center;justify-content:center;
-  background:var(--white);
-  flex-shrink:0;position:relative;
-  transition:transform .5s var(--ease);
-}
-.logo-mark svg{width:28px;height:28px;color:var(--brown)}
-.logo:hover .logo-mark{transform:rotate(-8deg)}
 .logo-text{display:flex;flex-direction:column;line-height:1.05}
-.logo-name{font-family:var(--serif);font-weight:700;font-size:18px;letter-spacing:.02em}
-.logo-tag{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.15em;margin-top:3px}
+.logo-name{
+  font-family:var(--serif);font-weight:700;
+  font-size:20px;letter-spacing:.01em;
+  color:var(--brown-deep);
+}
+.logo-tag{
+  font-size:10px;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.18em;
+  margin-top:4px;font-weight:500;
+}
 
 nav ul{display:flex;gap:28px;list-style:none;align-items:center}
 nav a{
@@ -152,45 +158,45 @@ nav a:hover{color:var(--brown)}
 /* ===== Hero (přesně jako leták) ===== */
 .hero{
   background:var(--brown-dark);
-  background-image:linear-gradient(135deg, var(--brown) 0%, var(--brown-dark) 70%, var(--brown-deep) 100%);
+  background-image:
+    linear-gradient(135deg, rgba(61,45,29,.78) 0%, rgba(42,31,20,.85) 100%),
+    url('images/realizace/hero.jpg');
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
   color:var(--cream);
-  padding:80px 24px 100px;
+  padding:120px 24px 140px;
   position:relative;overflow:hidden;
+  min-height:560px;
+  display:flex;align-items:center;
 }
 .hero::before{
   content:"";position:absolute;inset:0;
   background:var(--wood-bg);
+  opacity:.4;
   pointer-events:none;
 }
 .hero-inner{
   max-width:1180px;margin:0 auto;position:relative;z-index:1;
-  display:grid;grid-template-columns:1fr auto;gap:40px;
-  align-items:center;
+  width:100%;
 }
-.hero-text{max-width:760px}
+.hero-text{max-width:780px}
 .hero h1{
   font-family:var(--serif);font-weight:700;
   font-size:clamp(2.4rem, 6vw, 4.5rem);
   line-height:1;letter-spacing:-.015em;
   margin-bottom:28px;text-transform:uppercase;
   color:var(--cream);
+  text-shadow:0 2px 20px rgba(0,0,0,.3);
 }
 .hero h1 .line2{display:block;margin-top:.05em}
 .hero-sub{
   font-style:italic;font-size:clamp(1.2rem, 2.2vw, 1.6rem);
   color:var(--gold-soft);max-width:560px;margin-bottom:40px;
   font-family:var(--serif);font-weight:500;line-height:1.4;
+  text-shadow:0 2px 12px rgba(0,0,0,.4);
 }
 .hero-actions{display:flex;gap:14px;flex-wrap:wrap}
-
-/* Stamp logo (jako na letáku) */
-.hero-stamp{
-  width:240px;height:240px;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  position:relative;
-  opacity:.85;
-}
-.hero-stamp svg{width:100%;height:100%;color:var(--gold-soft)}
 
 /* ===== Buttons ===== */
 .btn{
@@ -311,7 +317,7 @@ section{padding:90px 0;position:relative}
 }
 .gallery-item{
   aspect-ratio:4/3;
-  background:var(--brown);
+  background:transparent;
   border-radius:var(--radius);
   overflow:hidden;
   position:relative;cursor:pointer;
@@ -326,14 +332,11 @@ section{padding:90px 0;position:relative}
   width:100%;height:100%;object-fit:cover;
   transition:transform .6s var(--ease);
   display:block;
+  opacity:1 !important;
+  filter:none !important;
 }
 .gallery-item:hover img{transform:scale(1.06)}
-.gallery-item::after{
-  content:"";position:absolute;inset:0;
-  background:linear-gradient(to top, rgba(45,30,18,.4), transparent 50%);
-  opacity:0;transition:opacity .3s;
-}
-.gallery-item:hover::after{opacity:1}
+.gallery-item::after{display:none}
 .gallery-caption{
   position:absolute;bottom:0;left:0;right:0;
   padding:18px 20px;color:var(--cream);
@@ -611,8 +614,7 @@ footer::before{
 @media (max-width:960px){
   .container{padding:0 20px}
   section{padding:70px 0}
-  .hero-inner{grid-template-columns:1fr;text-align:center}
-  .hero-stamp{margin:0 auto;width:180px;height:180px}
+  .hero-inner{text-align:center}
   .hero-text{margin:0 auto}
   .hero-actions{justify-content:center}
   .services-cols{grid-template-columns:1fr}
@@ -628,10 +630,8 @@ footer::before{
 
 @media (max-width:768px){
   .header-inner{padding:12px 20px}
-  .logo-mark{width:42px;height:42px}
-  .logo-mark svg{width:24px;height:24px}
-  .logo-name{font-size:16px}
-  .logo-tag{font-size:10px}
+  .logo-name{font-size:17px}
+  .logo-tag{font-size:9px}
 
   nav ul{
     position:fixed;top:68px;left:0;right:0;
@@ -647,12 +647,11 @@ footer::before{
   .nav-cta{margin:10px 20px;text-align:center;justify-content:center;padding:12px 18px}
   .burger{display:block;margin-right:-8px}
 
-  .hero{padding:50px 20px 60px}
+  .hero{padding:80px 20px 90px;min-height:480px}
   .hero h1{font-size:clamp(2rem, 9vw, 3rem)}
   .hero-sub{font-size:1.1rem;margin-bottom:32px}
   .hero-actions{gap:10px;flex-direction:column;width:100%}
   .hero-actions .btn{justify-content:center;width:100%}
-  .hero-stamp{width:140px;height:140px}
 
   section{padding:60px 0}
   .section-head{margin-bottom:40px}
@@ -678,11 +677,8 @@ footer::before{
 @media (max-width:420px){
   .container{padding:0 16px}
   .header-inner{padding:10px 16px}
-  .logo{gap:10px}
-  .logo-mark{width:38px;height:38px}
-  .logo-mark svg{width:22px;height:22px}
-  .logo-name{font-size:14px}
-  .logo-tag{font-size:9px;letter-spacing:.1em}
+  .logo-name{font-size:15px}
+  .logo-tag{font-size:9px;letter-spacing:.12em}
   .hero h1{font-size:1.9rem}
   .hero-sub{font-size:1rem}
   .svc-col{padding:28px 22px}
@@ -692,14 +688,20 @@ footer::before{
 </head>
 <body>
 
+<!-- Skrytá kopie formuláře pro Netlify Forms detection (povinné pro JS-řízené odeslání) -->
+<form name="poptavka" netlify netlify-honeypot="bot-field" hidden>
+  <input type="text" name="jmeno">
+  <input type="tel" name="telefon">
+  <input type="email" name="email">
+  <input type="text" name="typ">
+  <input type="text" name="lokalita">
+  <textarea name="popis"></textarea>
+  <input type="checkbox" name="souhlas">
+</form>
+
 <header id="header">
   <div class="header-inner">
     <a href="#" class="logo" aria-label="Řemeslné práce Vlasák">
-      <div class="logo-mark">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-        </svg>
-      </div>
       <div class="logo-text">
         <span class="logo-name">Řemeslné práce</span>
         <span class="logo-tag">Vlasák · Klatovy</span>
@@ -736,43 +738,6 @@ footer::before{
           +420 723 793 784
         </a>
       </div>
-    </div>
-    <!-- Stylizovaná razítková značka v duchu loga -->
-    <div class="hero-stamp">
-      <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.2">
-        <circle cx="120" cy="120" r="112" stroke-dasharray="3 3"/>
-        <circle cx="120" cy="120" r="100"/>
-        <circle cx="120" cy="120" r="92" opacity=".5"/>
-        <path d="M 28 110 Q 120 130 212 110" stroke-width="0.8" opacity=".5"/>
-        <text x="120" y="62" text-anchor="middle" font-family="Playfair Display, serif" font-size="14" font-weight="700" letter-spacing="3" fill="currentColor" stroke="none">ŘEMESLNÉ PRÁCE</text>
-        <text x="120" y="186" text-anchor="middle" font-family="Playfair Display, serif" font-size="20" font-weight="800" letter-spacing="6" fill="currentColor" stroke="none">VLASÁK</text>
-        <!-- Nářadí ve středu -->
-        <g transform="translate(120,120)" stroke-width="2" stroke-linecap="round">
-          <!-- kladivo -->
-          <g transform="rotate(-25)">
-            <line x1="-22" y1="0" x2="-22" y2="22" stroke-width="3"/>
-            <rect x="-32" y="-8" width="20" height="10" rx="2" fill="currentColor" stroke="none"/>
-          </g>
-          <!-- pilka -->
-          <g transform="rotate(20)">
-            <line x1="-12" y1="-22" x2="-12" y2="18" stroke-width="2.5"/>
-            <path d="M -16 18 L -8 22 L -8 28 L -16 24 Z" fill="currentColor" stroke="none"/>
-          </g>
-          <!-- klíč -->
-          <g transform="rotate(45)">
-            <line x1="0" y1="-5" x2="22" y2="17" stroke-width="2.5"/>
-            <circle cx="-2" cy="-7" r="6" fill="none"/>
-          </g>
-          <!-- pravítko -->
-          <g transform="rotate(70) translate(8,0)">
-            <rect x="-3" y="-22" width="6" height="40" rx="1" stroke-width="1.5"/>
-            <line x1="-3" y1="-15" x2="0" y2="-15"/>
-            <line x1="-3" y1="-5" x2="0" y2="-5"/>
-            <line x1="-3" y1="5" x2="0" y2="5"/>
-            <line x1="-3" y1="15" x2="0" y2="15"/>
-          </g>
-        </g>
-      </svg>
     </div>
   </div>
 </section>
@@ -866,29 +831,26 @@ footer::before{
   <div class="container">
     <div class="section-head reveal">
       <div class="section-eyebrow">Naše práce</div>
-      <h2>Realizace, které <em>za sebou stojí</em></h2>
+      <h2>Ukázka našich <em>zakázek</em></h2>
       <div class="divider">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z" opacity=".6"/></svg>
       </div>
-      <p>Ukázka z toho, co jsme dělali. Ve fotogalerii najdete pergoly, kuchyně, terasy a další realizace.</p>
     </div>
 
     <div class="gallery" id="gallery">
-      <div class="gallery-item reveal" data-img="image/realizace/01-pergola.svg" data-caption="Zahradní pergola">
-        <img src="image/realizace/01-pergola.svg" alt="Zahradní pergola s ohništěm" loading="lazy">
+      <div class="gallery-item" data-img="images/realizace/Pergola.png" data-caption="Zahradní pergola">
+        <img src="images/realizace/Pergola.png" alt="Zahradní pergola s ohništěm" loading="lazy">
         <div class="gallery-caption">Zahradní pergola</div>
       </div>
-      <div class="gallery-item reveal reveal-d1" data-img="image/realizace/02-kuchyne.svg" data-caption="Kuchyňská linka na míru">
-        <img src="image/realizace/02-kuchyne.svg" alt="Montáž kuchyňské linky" loading="lazy">
+      <div class="gallery-item" data-img="images/realizace/Kuchyn.png" data-caption="Kuchyňská linka na míru">
+        <img src="images/realizace/Kuchyn.png" alt="Montáž kuchyňské linky" loading="lazy">
         <div class="gallery-caption">Kuchyňská linka na míru</div>
       </div>
-      <div class="gallery-item reveal reveal-d2" data-img="image/realizace/03-zahrada.svg" data-caption="Úprava zahrady">
-        <img src="image/realizace/03-zahrada.svg" alt="Úprava zahrady s posezením" loading="lazy">
+      <div class="gallery-item" data-img="images/realizace/zahrada.png" data-caption="Úprava zahrady">
+        <img src="images/realizace/zahrada.png" alt="Úprava zahrady s posezením" loading="lazy">
         <div class="gallery-caption">Úprava zahrady</div>
       </div>
     </div>
-
-    <p class="gallery-note">Vyfocené fotky reálných realizací doplníme postupně.</p>
   </div>
 </section>
 
@@ -1107,7 +1069,7 @@ footer::before{
 </section>
 
 <!-- FOOTER -->
-<footer>
+<footer class="footer">
   <div class="container">
     <div class="footer-grid">
       <div>
@@ -1134,13 +1096,14 @@ footer::before{
         </ul>
       </div>
       <div>
-        <h4>Kontakt</h4>
-        <ul>
-          <li><a href="tel:+420723793784">+420 723 793 784</a></li>
-          <li><a href="mailto:remeslo@vlasak-kt.cz">remeslo@vlasak-kt.cz</a></li>
-          <li><a href="https://www.remeslovlasak.cz">www.remeslovlasak.cz</a></li>
-        </ul>
-      </div>
+  <h4>Kontakt</h4>
+  <ul>
+    <li><a href="tel:+420723793784">+420 723 793 784</a></li>
+    <li><a href="mailto:remeslo@vlasak-kt.cz">remeslo@vlasak-kt.cz</a></li>
+    <li><a href="https://www.remeslovlasak.cz">www.remeslovlasak.cz</a></li>
+    <li>IČO: 63514575</li>
+  </ul>
+</div>
     </div>
     <div class="footer-bottom">
       © <span id="year"></span> Řemeslné práce Vlasák · Klatovy. Všechna práva vyhrazena.
