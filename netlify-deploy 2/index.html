@@ -304,6 +304,33 @@ section{padding:90px 0;position:relative}
 .svc-list li:hover{color:var(--brown);padding-left:26px}
 .svc-list li:hover::before{background:var(--gold)}
 
+/* ===== Katalog na úvodní stránce ===== */
+.catalog-home{background:var(--cream-warm)}
+.catalog-home-card{
+  display:grid;grid-template-columns:1.25fr .75fr;gap:32px;align-items:center;
+  background:var(--white);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:42px 46px;position:relative;overflow:hidden;
+}
+.catalog-home-card::after{
+  content:"";position:absolute;right:-90px;top:-90px;width:240px;height:240px;
+  border:1px solid var(--gold);border-radius:50%;opacity:.35;
+}
+.catalog-home-copy h3{
+  font-family:var(--serif);font-size:clamp(1.7rem,3vw,2.35rem);line-height:1.15;
+  color:var(--brown-deep);margin-bottom:14px;
+}
+.catalog-home-copy p{color:var(--muted);font-size:1.02rem;max-width:600px;margin-bottom:24px}
+.catalog-home-badge{
+  justify-self:end;position:relative;z-index:1;text-align:center;
+  width:170px;height:170px;border-radius:50%;background:var(--brown);color:var(--cream);
+  display:flex;align-items:center;justify-content:center;padding:22px;
+  font-family:var(--serif);font-style:italic;font-size:1.35rem;line-height:1.2;
+}
+@media (max-width:700px){
+  .catalog-home-card{grid-template-columns:1fr;padding:30px 24px}
+  .catalog-home-badge{justify-self:start;width:120px;height:120px;font-size:1.05rem}
+}
+
 /* ===== Realizace — galerie ===== */
 .realizace{background:var(--cream-soft);position:relative;overflow:hidden}
 .realizace::before{
@@ -714,6 +741,7 @@ footer::before{
       <ul id="navMenu">
         <li><a href="#sluzby">Služby</a></li>
         <li><a href="/realizace/">Realizace</a></li>
+          <li><a href="/obchod/">Katalog</a></li>
         <li><a href="#hodnoty">O nás</a></li>
         <li><a href="#kontakt">Kontakt</a></li>
         <li><a href="#poptavka" class="nav-cta">Poptat práci</a></li>
@@ -822,6 +850,31 @@ footer::before{
           <li>seřízení oken a dveří</li>
         </ul>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- KATALOG — výrobky na zakázku -->
+<section id="katalog" class="catalog-home">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">Katalog</div>
+      <h2>Výrobky <em>na zakázku</em></h2>
+      <div class="divider">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z" opacity=".6"/></svg>
+      </div>
+      <p>Prohlédněte si naše drobné výrobky a pošlete nám nezávaznou poptávku.</p>
+    </div>
+    <div class="catalog-home-card reveal">
+      <div class="catalog-home-copy">
+        <h3>Poctivé dřevo, které má svůj příběh</h3>
+        <p>Rustikální lampy, vyřezávané dekorace a další originální výrobky vyrábíme ručně. Dostupnost, cenu i předání s vámi následně osobně potvrdíme.</p>
+        <a class="btn btn-primary" href="/obchod/">
+          Prohlédnout katalog
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+      <div class="catalog-home-badge" aria-hidden="true">Vyrobeno<br>ručně</div>
     </div>
   </div>
 </section>
@@ -1080,6 +1133,7 @@ footer::before{
         <ul>
           <li><a href="#sluzby">Služby</a></li>
           <li><a href="/realizace/">Realizace</a></li>
+          <li><a href="/obchod/">Katalog</a></li>
           <li><a href="#hodnoty">O nás</a></li>
           <li><a href="#kontakt">Kontakt</a></li>
           <li><a href="#poptavka">Poptávka</a></li>
