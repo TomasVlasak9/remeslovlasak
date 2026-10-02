@@ -83,8 +83,8 @@ export default async (req) => {
     if (typeof telo.popisek === 'string') polozka.popisek = telo.popisek.trim().slice(0, 120);
     if (typeof telo.alt === 'string') polozka.alt = telo.alt.trim().slice(0, 160);
     if (typeof telo.naUvodu === 'boolean') {
-      if (telo.naUvodu && index.polozky.filter(p => p.naUvodu).length >= 6) {
-        return chyba('Na úvodní stránce může být nejvýše 6 fotek. Nejprve jednu odeberte.');
+      if (telo.naUvodu && index.polozky.filter(p => p.naUvodu).length >= 12) {
+        return chyba('Na úvodní stránce může být nejvýše 12 fotek. Nejprve jednu odeberte.');
       }
       polozka.naUvodu = telo.naUvodu;
     }
@@ -95,6 +95,17 @@ export default async (req) => {
       const j = telo.smer === 'nahoru' ? i - 1 : i + 1;
       if (j >= 0 && j < serazene.length) {
         [serazene[i].poradi, serazene[j].poradi] = [serazene[j].poradi, serazene[i].poradi];
+      }
+    }
+
+    if (Number.isInteger(telo.poradi)) {
+      const serazene = index.polozky.sort((a, b) => (a.poradi || 0) - (b.poradi || 0));
+      const puvodni = serazene.findIndex(p => p.id === id);
+      const cil = Math.max(0, Math.min(serazene.length - 1, telo.poradi - 1));
+      if (puvodni !== -1) {
+        const [presunuta] = serazene.splice(puvodni, 1);
+        serazene.splice(cil, 0, presunuta);
+        serazene.forEach((p, i) => { p.poradi = i + 1; });
       }
     }
 
