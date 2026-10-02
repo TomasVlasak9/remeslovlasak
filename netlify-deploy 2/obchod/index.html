@@ -1,7 +1,63 @@
 <!DOCTYPE html>
 <html lang="cs"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Katalog | Řemeslné práce Vlasák</title><link rel="stylesheet" href="/styl.css"></head>
 <body><header id="header"><div class="header-inner"><a href="/" class="logo" aria-label="Řemeslné práce Vlasák"><div class="logo-text"><span class="logo-name">Řemeslné práce</span><span class="logo-tag">Vlasák · Klatovy</span></div></a><nav><ul id="navMenu"><li><a href="/">Domů</a></li><li><a href="/realizace/">Realizace</a></li><li><a href="/obchod/" aria-current="page">Katalog</a></li><li><a href="/#kontakt">Kontakt</a></li></ul></nav></div></header>
-<main class="container" style="padding:7rem 1rem 5rem"><div class="section-head"><div class="section-eyebrow">Náš katalog</div><h1>Výrobky <em>na zakázku</em></h1><p>Vyberte si výrobek a pošlete nám nezávaznou poptávku. Dostupnost, cenu i předání s vámi následně potvrdíme.</p></div><div id="produkty" class="gallery"></div><p id="prazdno" hidden>Momentálně připravujeme nabídku.</p></main>
+<main class="container" style="padding:7rem 1rem 5rem"><div class="section-head"><div class="section-eyebrow">Náš katalog</div><h1>Výrobky <em>na zakázku</em></h1><p>Vyberte si výrobek a pošlete nám nezávaznou poptávku. Kliknutím na výrobek zobrazíte celou fotografii a kompletní popis.</p></div><div id="produkty" class="gallery"></div><p id="prazdno" hidden>Momentálně připravujeme nabídku.</p></main>
+
+<div class="produkt-modal" id="produktModal" hidden role="dialog" aria-modal="true" aria-labelledby="modalNazev">
+  <div class="produkt-modal-stin" data-modal-close></div>
+  <div class="produkt-modal-box">
+    <button class="produkt-modal-zavrit" type="button" aria-label="Zavřít detail" data-modal-close>×</button>
+    <img id="modalObrazek" alt="">
+    <div class="produkt-modal-obsah">
+      <h2 id="modalNazev"></h2>
+      <p id="modalPopis"></p>
+      <p id="modalCena" class="produkt-modal-cena"></p>
+      <a id="modalPoptavka" class="btn btn-primary" href="#">Nezávazně poptat</a>
+    </div>
+  </div>
+</div>
+
 <script>
-(function(){var box=document.getElementById('produkty'); fetch('/api/produkty?aktualni='+Date.now()).then(r=>r.json()).then(d=>{(d.polozky||[]).filter(p=>p.aktivni).forEach(p=>{var el=document.createElement('article');el.className='card';el.innerHTML=(p.obrazek?'<img src="'+p.obrazek.replace(/"/g,'&quot;')+'" alt="">':'')+'<h2>'+p.nazev+'</h2>'+(p.popis?'<p>'+p.popis+'</p>':'')+(p.cena?'<p><strong>'+p.cena+'</strong></p>':'')+'<a class="btn btn-primary" href="/obchod/poptavka.html?produkt='+encodeURIComponent(p.nazev)+'">Nezávazně poptat</a>';box.appendChild(el)});if(!box.children.length)document.getElementById('prazdno').hidden=false}).catch(()=>{document.getElementById('prazdno').hidden=false})})();
+(function(){
+  var box=document.getElementById('produkty');
+  var modal=document.getElementById('produktModal');
+  var modalObrazek=document.getElementById('modalObrazek');
+  var modalNazev=document.getElementById('modalNazev');
+  var modalPopis=document.getElementById('modalPopis');
+  var modalCena=document.getElementById('modalCena');
+  var modalPoptavka=document.getElementById('modalPoptavka');
+
+  function otevri(p){
+    modalNazev.textContent=p.nazev||'Výrobek';
+    modalPopis.textContent=p.popis||'Podrobnosti výrobku rádi upřesníme v nezávazné poptávce.';
+    modalCena.textContent=p.cena||'';
+    modalCena.hidden=!p.cena;
+    modalPoptavka.href='/obchod/poptavka.html?produkt='+encodeURIComponent(p.nazev||'');
+    if(p.obrazek){modalObrazek.src=p.obrazek;modalObrazek.alt=p.nazev||'Fotografie výrobku';modalObrazek.hidden=false}
+    else{modalObrazek.removeAttribute('src');modalObrazek.alt='';modalObrazek.hidden=true}
+    modal.hidden=false;
+    document.body.classList.add('modal-otevreny');
+    modal.querySelector('.produkt-modal-zavrit').focus();
+  }
+  function zavri(){modal.hidden=true;document.body.classList.remove('modal-otevreny')}
+  document.querySelectorAll('[data-modal-close]').forEach(function(el){el.addEventListener('click',zavri)});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!modal.hidden)zavri()});
+
+  fetch('/api/produkty?aktualni='+Date.now()).then(function(r){return r.json()}).then(function(d){
+    (d.polozky||[]).filter(function(p){return p.aktivni}).forEach(function(p){
+      var el=document.createElement('article');el.className='card produkt-karta';el.tabIndex=0;
+      if(p.obrazek){var img=document.createElement('img');img.src=p.obrazek;img.alt=p.nazev||'Fotografie výrobku';el.appendChild(img)}
+      var h=document.createElement('h2');h.textContent=p.nazev||'Výrobek';el.appendChild(h);
+      if(p.popis){var desc=document.createElement('p');desc.textContent=p.popis;el.appendChild(desc)}
+      if(p.cena){var cena=document.createElement('p');var strong=document.createElement('strong');strong.textContent=p.cena;cena.appendChild(strong);el.appendChild(cena)}
+      var detail=document.createElement('button');detail.type='button';detail.className='btn btn-detail';detail.textContent='Zobrazit detail';el.appendChild(detail);
+      var poptavka=document.createElement('a');poptavka.className='btn btn-primary';poptavka.href='/obchod/poptavka.html?produkt='+encodeURIComponent(p.nazev||'');poptavka.textContent='Nezávazně poptat';el.appendChild(poptavka);
+      detail.addEventListener('click',function(){otevri(p)});
+      el.addEventListener('click',function(e){if(e.target.closest('a,button'))return;otevri(p)});
+      el.addEventListener('keydown',function(e){if((e.key==='Enter'||e.key===' ')&&e.target===el){e.preventDefault();otevri(p)}});
+      box.appendChild(el);
+    });
+    if(!box.children.length)document.getElementById('prazdno').hidden=false;
+  }).catch(function(){document.getElementById('prazdno').hidden=false});
+})();
 </script></body></html>
