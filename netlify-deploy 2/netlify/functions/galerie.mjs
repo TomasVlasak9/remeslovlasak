@@ -20,8 +20,8 @@ export default async (req) => {
       .slice()
       .sort((a, b) => (a.poradi || 0) - (b.poradi || 0));
     return json({ polozky, celkem: polozky.length }, 200, {
-      'Cache-Control': 'public, max-age=0, must-revalidate',
-      'Netlify-CDN-Cache-Control': 'public, max-age=60, stale-while-revalidate=300'
+      'Cache-Control': 'no-store, max-age=0',
+      'Netlify-CDN-Cache-Control': 'no-store'
     });
   }
 
