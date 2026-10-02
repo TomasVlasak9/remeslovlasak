@@ -331,10 +331,22 @@ label{display:block;font-size:13px;font-weight:600;color:var(--brown);margin-bot
       var telo = document.createElement('div');
       telo.className = 'polozka-telo';
 
-      var znacka = document.createElement('span');
-      znacka.className = 'znacka';
-      znacka.textContent = i + 1 + '. v pořadí';
-      telo.appendChild(znacka);
+      var rada = document.createElement('div');
+      rada.className = 'polozka-akce';
+      var poradi = document.createElement('select');
+      poradi.setAttribute('aria-label', 'Pořadí v galerii');
+      for (var n = 1; n <= polozky.length; n++) {
+        var moznost = document.createElement('option');
+        moznost.value = n;
+        moznost.textContent = n + '. v pořadí';
+        moznost.selected = n === i + 1;
+        poradi.appendChild(moznost);
+      }
+      rada.appendChild(poradi);
+      rada.appendChild(tlacitko('Uložit pořadí', 'tl-vedlejsi tl-mala', function () {
+        posli(p.id, { poradi: Number(poradi.value) }, 'Pořadí uloženo.');
+      }));
+      telo.appendChild(rada);
 
       var vstup = document.createElement('input');
       vstup.type = 'text';
@@ -364,16 +376,6 @@ label{display:block;font-size:13px;font-weight:600;color:var(--brown);margin-bot
       akce.appendChild(tlacitko('Uložit popisek', 'tl-vedlejsi tl-mala', function () {
         posli(p.id, { popisek: vstup.value }, 'Popisek uložen.');
       }));
-      if (i > 0) {
-        akce.appendChild(tlacitko('↑ Nahoru', 'tl-vedlejsi tl-mala', function () {
-          posli(p.id, { smer: 'nahoru' }, 'Pořadí změněno.');
-        }));
-      }
-      if (i < polozky.length - 1) {
-        akce.appendChild(tlacitko('↓ Dolů', 'tl-vedlejsi tl-mala', function () {
-          posli(p.id, { smer: 'dolu' }, 'Pořadí změněno.');
-        }));
-      }
       akce.appendChild(tlacitko('Smazat', 'tl-smazat tl-mala', function () {
         if (!confirm('Opravdu smazat tuhle fotku z webu?')) return;
         fetch('/api/galerie/' + encodeURIComponent(p.id), { method: 'DELETE' })
