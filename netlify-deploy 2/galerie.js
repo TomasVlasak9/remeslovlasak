@@ -43,7 +43,7 @@
     var box = document.getElementById(options.cil);
     if (!box) return;
 
-    fetch('/api/galerie', { headers: { 'Accept': 'application/json' } })
+    fetch('/api/galerie?aktualni=' + Date.now(), { cache: 'no-store', headers: { 'Accept': 'application/json' } })
       .then(function (r) {
         if (!r.ok) throw new Error('API ' + r.status);
         return r.json();
