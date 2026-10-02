@@ -1,1 +1,144 @@
-<!DOCTYPE html><html lang="cs"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Nezávazná poptávka | Řemeslné práce Vlasák</title><link rel="stylesheet" href="/styl.css"></head><body><main class="container" style="max-width:650px;padding:5rem 1rem"><a href="/obchod/">← Zpět do katalogu</a><h1 style="margin:2rem 0 1rem">Nezávazná poptávka</h1><form id="form"><label>Produkt<input required name="produkt" id="produkt"></label><label>Jméno<input required name="jmeno"></label><label>E-mail<input required type="email" name="email"></label><label>Telefon<input name="telefon"></label><label>Zpráva<textarea name="zprava" rows="5"></textarea></label><button class="btn btn-primary" type="submit">Odeslat poptávku</button><p id="stav"></p></form></main><script>var q=new URLSearchParams(location.search);document.getElementById('produkt').value=q.get('produkt')||'';document.getElementById('form').addEventListener('submit',function(e){e.preventDefault();var f=new FormData(e.target),d=Object.fromEntries(f.entries());fetch('/api/poptavky',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)}).then(r=>r.json().then(x=>({ok:r.ok,x}))).then(v=>{if(!v.ok)throw Error(v.x.chyba||'Odeslání se nepovedlo.');e.target.reset();document.getElementById('stav').textContent='Děkujeme, ozveme se vám.'}).catch(x=>document.getElementById('stav').textContent=x.message)})</script></body></html>
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nezávazná poptávka | Řemeslné práce Vlasák</title>
+<link rel="stylesheet" href="/styl.css">
+</head>
+<body>
+<header id="header">
+  <div class="header-inner">
+    <a href="/" class="logo" aria-label="Řemeslné práce Vlasák">
+      <div class="logo-text"><span class="logo-name">Řemeslné práce</span><span class="logo-tag">Vlasák · Klatovy</span></div>
+    </a>
+    <nav><ul><li><a href="/">Domů</a></li><li><a href="/realizace/">Realizace</a></li><li><a href="/obchod/">Katalog</a></li><li><a href="/#kontakt">Kontakt</a></li></ul></nav>
+  </div>
+</header>
+
+<main class="contact" style="padding-top:110px">
+  <div class="container" style="max-width:760px">
+    <div class="contact-claim">
+      <h1>Nezávazná <em>poptávka</em></h1>
+      <p>Pošlete nám pár informací o výrobku, který vás zaujal. Dostupnost, cenu i způsob předání s vámi následně osobně potvrdíme.</p>
+    </div>
+
+    <div class="form-card">
+      <div class="form-success" id="formSuccess">✓ Děkujeme za poptávku! Ozveme se vám co nejdříve.</div>
+      <div class="form-error" id="formError">✗ Omlouváme se, odeslání se nepodařilo. Zkuste to prosím znovu.</div>
+
+      <form id="form" name="poptavka" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" novalidate>
+        <input type="hidden" name="form-name" value="poptavka">
+        <p style="display:none"><label>Nejste robot: <input name="bot-field"></label></p>
+
+        <div class="form-group">
+          <label for="produkt">Vybraný produkt <span class="req">*</span></label>
+          <input required name="produkt" id="produkt" readonly>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="jmeno">Jméno a příjmení <span class="req">*</span></label>
+            <input required name="jmeno" id="jmeno" autocomplete="name">
+            <div class="error" data-for="jmeno">Vyplňte prosím vaše jméno.</div>
+          </div>
+          <div class="form-group">
+            <label for="telefon">Telefon</label>
+            <input name="telefon" id="telefon" autocomplete="tel" placeholder="+420">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">E-mail <span class="req">*</span></label>
+          <input required type="email" name="email" id="email" autocomplete="email">
+          <div class="error" data-for="email">Zkontrolujte formát e-mailu.</div>
+        </div>
+
+        <div class="form-group">
+          <label for="zprava">Zpráva</label>
+          <textarea name="zprava" id="zprava" rows="5" placeholder="Například počet kusů, rozměry nebo vaše představa o termínu."></textarea>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="souhlas" name="souhlas" required>
+          <label for="souhlas">Souhlasím s obchodními podmínkami a se zpracováním osobních údajů za účelem vyřízení poptávky. <span class="req">*</span></label>
+        </div>
+
+        <button class="form-submit" id="submitBtn" type="submit"><span>Odeslat poptávku <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></button>
+      </form>
+    </div>
+
+    <p style="text-align:center;margin-top:24px"><a href="/obchod/">← Zpět do katalogu</a></p>
+  </div>
+</main>
+
+<script>
+(function () {
+  var query = new URLSearchParams(location.search);
+  var form = document.getElementById('form');
+  var product = document.getElementById('produkt');
+  product.value = query.get('produkt') || '';
+
+  var successBox = document.getElementById('formSuccess');
+  var errorBox = document.getElementById('formError');
+  var submitBtn = document.getElementById('submitBtn');
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    var email = form.email.value.trim();
+    var jmeno = form.jmeno.value.trim();
+    if (!form.produkt.value.trim() || !jmeno || !email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !form.souhlas.checked) {
+      if (!jmeno) document.querySelector('[data-for="jmeno"]').classList.add('show');
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) document.querySelector('[data-for="email"]').classList.add('show');
+      return;
+    }
+
+    successBox.classList.remove('show');
+    errorBox.classList.remove('show');
+    submitBtn.disabled = true;
+    submitBtn.querySelector('span').firstChild.textContent = 'Odesílám… ';
+
+    var formData = new FormData(form);
+    var apiData = {
+      produkt: form.produkt.value.trim(),
+      jmeno: jmeno,
+      email: email,
+      telefon: form.telefon.value.trim(),
+      zprava: form.zprava.value.trim(),
+      souhlas: true
+    };
+    var netlifyData = new URLSearchParams();
+    formData.forEach(function (value, key) { netlifyData.append(key, value); });
+
+    Promise.all([
+      fetch('/api/poptavky', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(apiData) }).then(function (r) {
+        return r.json().then(function (d) { if (!r.ok) throw new Error(d.chyba || 'Uložení poptávky se nepodařilo.'); });
+      }),
+      fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:netlifyData.toString() }).then(function (r) {
+        if (!r.ok) throw new Error('Odeslání e-mailu se nepodařilo.');
+      })
+    ]).then(function () {
+      form.reset();
+      product.value = apiData.produkt;
+      successBox.classList.add('show');
+      successBox.scrollIntoView({ behavior:'smooth', block:'center' });
+    }).catch(function (error) {
+      console.error(error);
+      errorBox.classList.add('show');
+      errorBox.scrollIntoView({ behavior:'smooth', block:'center' });
+    }).finally(function () {
+      submitBtn.disabled = false;
+      submitBtn.querySelector('span').innerHTML = 'Odeslat poptávku <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+    });
+  });
+
+  form.querySelectorAll('input, textarea').forEach(function (field) {
+    field.addEventListener('input', function () {
+      var error = document.querySelector('[data-for="' + field.name + '"]');
+      if (error) error.classList.remove('show');
+    });
+  });
+})();
+</script>
+</body>
+</html>
