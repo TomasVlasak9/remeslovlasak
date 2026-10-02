@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Realizace | Řemeslné práce Vlasák</title>
+<meta name="description" content="Fotogalerie dokončených zakázek — pergoly, terasy, ploty, kuchyně, montáže a úpravy zahrad. Řemeslné práce Vlasák, Klatovy a okolí.">
+<meta name="theme-color" content="#5a4530">
+
+<meta property="og:title" content="Řemeslné práce Vlasák">
+<meta property="og:description" content="Poctivé řemeslo a pomocná ruka pro váš dům, byt i zahradu. Klatovy a okolí.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="cs_CZ">
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" sizes="192x192" href="/favicon-192.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400;1,500;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/styl.css">
+</head>
+<body>
+<header id="header">
+  <div class="header-inner">
+    <a href="#" class="logo" aria-label="Řemeslné práce Vlasák">
+      <div class="logo-text">
+        <span class="logo-name">Řemeslné práce</span>
+        <span class="logo-tag">Vlasák · Klatovy</span>
+      </div>
+    </a>
+    <nav>
+      <button class="burger" aria-label="Menu" aria-expanded="false" id="burger">
+        <span></span><span></span><span></span>
+      </button>
+      <ul id="navMenu">
+        <li><a href="/#sluzby">Služby</a></li>
+        <li><a href="/realizace/" aria-current="page">Realizace</a></li>
+        <li><a href="/#hodnoty">O nás</a></li>
+        <li><a href="/#kontakt">Kontakt</a></li>
+        <li><a href="/#poptavka" class="nav-cta">Poptat práci</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section class="realizace realizace-vse">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-eyebrow">Naše práce</div>
+      <h2>Realizace <em>zakázek</em></h2>
+      <div class="divider">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z" opacity=".6"/></svg>
+      </div>
+      <p class="realizace-uvod">Průřez tím, co jsme dokončili. Fotky přibývají průběžně, jak odcházíme ze zakázek.</p>
+    </div>
+
+    <div class="gallery gallery-vse" id="galleryVse"></div>
+    <p class="galerie-prazdno" id="galerieePrazdno" hidden>Fotky zakázek sem brzy doplníme.</p>
+
+    <div style="text-align:center;margin-top:3.5rem">
+      <a href="/#poptavka" class="btn btn-primary">Chci nezávaznou nabídku</a>
+    </div>
+  </div>
+</section>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-label="Zvětšená fotka">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Zavřít">×</button>
+  <img id="lightboxImg" src="" alt="">
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">Řemeslné práce Vlasák</div>
+        <span class="footer-tag">Klatovy a okolí</span>
+        <p>Poctivé řemeslo a pomocná ruka pro váš dům, byt i zahradu.</p>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/remeslo_vlasak" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="https://www.facebook.com/remeslovlasak" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h4>Navigace</h4>
+        <ul>
+          <li><a href="/#sluzby">Služby</a></li>
+          <li><a href="/#realizace">Realizace</a></li>
+          <li><a href="/#hodnoty">O nás</a></li>
+          <li><a href="/#kontakt">Kontakt</a></li>
+          <li><a href="/#poptavka">Poptávka</a></li>
+        </ul>
+      </div>
+      <div>
+  <h4>Kontakt</h4>
+  <ul>
+    <li><a href="tel:+420723793784">+420 723 793 784</a></li>
+    <li><a href="mailto:remeslo@vlasak-kt.cz">remeslo@vlasak-kt.cz</a></li>
+    <li><a href="https://www.remeslovlasak.cz">www.remeslovlasak.cz</a></li>
+    <li>IČO: 63514575</li>
+  </ul>
+</div>
+    </div>
+    <div class="footer-bottom">
+      © <span id="year"></span> Řemeslné práce Vlasák · Klatovy. Všechna práva vyhrazena.
+    </div>
+  </div>
+</footer>
+
+<script src="/galerie.js" defer></script>
+<script src="/skript.js" defer></script>
+<script defer>
+  window.addEventListener("DOMContentLoaded", function () {
+    window.NactiGalerii({ cil: "galleryVse", prazdno: "galerieePrazdno" });
+  });
+</script>
+</body>
+</html>
