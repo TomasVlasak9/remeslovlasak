@@ -160,7 +160,7 @@ nav a:hover{color:var(--brown)}
   background:var(--brown-dark);
   background-image:
     linear-gradient(135deg, rgba(61,45,29,.78) 0%, rgba(42,31,20,.85) 100%),
-    url('images/realizace/hero.jpg');
+    url('images/realizace/hero.jpg?v=20261002');
   background-size:cover;
   background-position:center;
   background-repeat:no-repeat;
@@ -713,7 +713,7 @@ footer::before{
       </button>
       <ul id="navMenu">
         <li><a href="#sluzby">Služby</a></li>
-        <li><a href="#realizace">Realizace</a></li>
+        <li><a href="/realizace/">Realizace</a></li>
         <li><a href="#hodnoty">O nás</a></li>
         <li><a href="#kontakt">Kontakt</a></li>
         <li><a href="#poptavka" class="nav-cta">Poptat práci</a></li>
@@ -837,19 +837,9 @@ footer::before{
       </div>
     </div>
 
-    <div class="gallery" id="gallery">
-      <div class="gallery-item" data-img="images/realizace/Pergola.png" data-caption="Zahradní pergola">
-        <img src="images/realizace/Pergola.png" alt="Zahradní pergola s ohništěm" loading="lazy">
-        <div class="gallery-caption">Zahradní pergola</div>
-      </div>
-      <div class="gallery-item" data-img="images/realizace/Kuchyn.png" data-caption="Kuchyňská linka na míru">
-        <img src="images/realizace/Kuchyn.png" alt="Montáž kuchyňské linky" loading="lazy">
-        <div class="gallery-caption">Kuchyňská linka na míru</div>
-      </div>
-      <div class="gallery-item" data-img="images/realizace/zahrada.png" data-caption="Úprava zahrady">
-        <img src="images/realizace/zahrada.png" alt="Úprava zahrady s posezením" loading="lazy">
-        <div class="gallery-caption">Úprava zahrady</div>
-      </div>
+    <div class="gallery" id="gallery"></div>
+    <div id="realizaceVice" style="text-align:center;margin-top:2.5rem" hidden>
+      <a href="/realizace/" class="btn btn-primary">Zobrazit všechny realizace</a>
     </div>
   </div>
 </section>
@@ -1089,7 +1079,7 @@ footer::before{
         <h4>Navigace</h4>
         <ul>
           <li><a href="#sluzby">Služby</a></li>
-          <li><a href="#realizace">Realizace</a></li>
+          <li><a href="/realizace/">Realizace</a></li>
           <li><a href="#hodnoty">O nás</a></li>
           <li><a href="#kontakt">Kontakt</a></li>
           <li><a href="#poptavka">Poptávka</a></li>
@@ -1164,13 +1154,13 @@ footer::before{
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightboxImg');
   const lightboxClose = document.getElementById('lightboxClose');
-  document.querySelectorAll('.gallery-item').forEach(item => {
-    item.addEventListener('click', () => {
-      lightboxImg.src = item.dataset.img;
-      lightboxImg.alt = item.dataset.caption || '';
-      lightbox.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    });
+  document.addEventListener('click', (event) => {
+    const item = event.target.closest('.gallery-item');
+    if (!item) return;
+    lightboxImg.src = item.dataset.img;
+    lightboxImg.alt = item.dataset.caption || '';
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
   });
   const closeLightbox = () => {
     lightbox.classList.remove('open');
@@ -1274,6 +1264,10 @@ footer::before{
       }
     });
   });
+  window.addEventListener('DOMContentLoaded', () => {
+    window.NactiGalerii({cil:'gallery', limit:6, vice:'realizaceVice', pouzeUvod:true});
+  });
 </script>
+<script src="/galerie.js" defer></script>
 </body>
 </html>
