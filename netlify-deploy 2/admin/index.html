@@ -299,7 +299,7 @@ label{display:block;font-size:13px;font-weight:600;color:var(--brown);margin-bot
   /* ---------- Seznam ---------- */
 
   function nactiSeznam() {
-    fetch('/api/galerie')
+    fetch('/api/galerie?aktualni=' + Date.now(), { cache: 'no-store' })
       .then(function (r) { return r.json(); })
       .then(function (data) {
         el('nacitam').classList.add('skryt');
