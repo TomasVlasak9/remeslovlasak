@@ -20,6 +20,11 @@ export function store() {
   return produkce ? getStore(opts) : getDeployStore(opts);
 }
 
+// Katalog má vlastní trvalé úložiště, aby obsah přežil každé nové nasazení.
+export function katalogStore() {
+  return getStore({ name: 'katalog', consistency: 'strong' });
+}
+
 export async function nactiIndex() {
   const s = store();
   const data = await s.get(KLIC_INDEX, { type: 'json' });
