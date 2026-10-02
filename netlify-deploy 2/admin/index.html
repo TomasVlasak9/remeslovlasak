@@ -433,7 +433,7 @@ label{display:block;font-size:13px;font-weight:600;color:var(--brown);margin-bot
   function dataZObrazku(soubor) {
     return new Promise(function (resolve, reject) {
       if (!soubor) return resolve(null);
-      if (!/^image\\//.test(soubor.type)) return reject(new Error('Vyberte prosím obrázek.'));
+      if (!/^image\//.test(soubor.type)) return reject(new Error('Vyberte prosím obrázek.'));
       var reader = new FileReader();
       reader.onerror = function () { reject(new Error('Obrázek se nepodařilo načíst.')); };
       reader.onload = function (ev) {
